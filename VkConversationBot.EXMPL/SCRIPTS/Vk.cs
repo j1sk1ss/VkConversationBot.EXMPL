@@ -9,43 +9,61 @@ using VkNet.Enums.Filters;
 using VkNet.Model.Keyboard;
 using System.Threading;
 using System.IO;
+using System.Windows;
 using System.Windows.Threading;
+using VkConversationBot.EXMPL.Windows;
 
 namespace VkConversationBot.EXMPL.SCRIPTS
 {
-    public class Vk
-    {
+    public class Vk {
+
+        public Vk(List<QuestionClass> questionClasses, string token, long idOfConversation)
+        {
+            DataBase = new Dictionary<string, string>();
+            foreach (var quest in questionClasses) {
+                DataBase!.Add(quest.Quest, quest.Answer);
+            }
+            Token = token;
+            IdOfConversation = idOfConversation;
+        }
+        
         private readonly DispatcherTimer _timer = new() {
             Interval = new TimeSpan(0, 0, 1)
         };
-
-        private static readonly Dictionary<string, string> DataBase = new() {
-            {"Привет", "Пока!"}
-        };
         
-        private const string Token = ""; // access token generation module
+        private Dictionary<string, string> DataBase { get; set; }
+        private string Token { get; set; }
+        private long IdOfConversation { get; set; }
 
         private static readonly VkApi VkApi = new();
 
-        private const long IdOfConversation = 0; // Chosen dialog or conversation
-
         [Obsolete("Obsolete")]
         public void Start() {
-            _timer.Tick += One_Tick;
-            VkApi.Authorize(new ApiAuthParams
+            try
             {
-                AccessToken = Token,
-                Settings = Settings.All
-            });
+                VkApi.Authorize(new ApiAuthParams
+                {
+                    AccessToken = Token,
+                    Settings = Settings.All
+                });
+                One_Tick();
+            }
+            catch (Exception e) {
+                MessageBox.Show($"{e}");
+            }
         }
 
         [Obsolete("Obsolete")]
-        private static void One_Tick(object sender, EventArgs e) {
-            Receive();
+        private void One_Tick()
+        {
+            while (true) {
+                Thread.Sleep(100);
+                Receive();
+            }
         }
         
         [Obsolete("Obsolete")]
-        private static void Receive() {
+        private void Receive() {
             var minfo = GetMessage();
                 if (minfo == null) return;
             var message = minfo[1].ToString() != "" ? minfo[1].ToString() : minfo[0].ToString();
@@ -64,10 +82,9 @@ namespace VkConversationBot.EXMPL.SCRIPTS
                 Keyboard = keyboard
             });
         }
-
-
+        
         [Obsolete]
-        private static object[] GetMessage()
+        private object[] GetMessage()
         {
             long? userid = 0;
 
@@ -77,7 +94,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS
             });
 
             foreach (var msg in messages.Messages) {
-                if (msg.ChatId is not IdOfConversation) continue;
+                if (msg.ChatId != IdOfConversation) continue;
                     var message = !string.IsNullOrEmpty(msg.Body) ? msg.Body : "";
                     var keyname = msg.Payload ?? "";
                     var id = msg.UserId;
@@ -85,7 +102,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS
                         userid = id.Value;
                     }
                 var keys = new object[]{ message, keyname, userid };
-                    VkApi.Messages.MarkAsRead(msg.PeerId.ToString());
+                    //VkApi.Messages.MarkAsRead(msg.PeerId.ToString());
                         return keys;
             }
             return null;

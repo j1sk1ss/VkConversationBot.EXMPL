@@ -7,7 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Unofficial.Microsoft.mshtml" Version="7.0.3300" />
       <PackageReference Include="VkNet" Version="1.72.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="IMG\QuestHolder.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="IMG" />
+      <Folder Include="Windows" />
     </ItemGroup>
 
 </Project>

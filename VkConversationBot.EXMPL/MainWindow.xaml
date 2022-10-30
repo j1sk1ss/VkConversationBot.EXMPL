@@ -3,10 +3,41 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:VkConversationBot.EXMPL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="VK bot by Fot" Height="500" Width="800"
+        ResizeMode="NoResize" WindowStyle="ToolWindow"
+        >
+    <Grid Margin="0,20,0,0">
+        <TextBox Height="25" Width="100" Margin="-650,-450,0,0"> Логин ВК </TextBox>
+        <TextBox Height="25" Width="100" Margin="-650,-390,0,0"> Пароль ВК </TextBox>
+        <TextBox x:Name="Access" Height="25" Width="100" Margin="-650,-310,0,0"> Access token </TextBox>
+        <TextBox x:Name="Id" Height="25" Width="100" Margin="-440,-310,0,0"> ID conversation </TextBox>
+        <Button Click="GenerateApi" Height="55" Width="100" Margin="-400,-420,0,0"> Получить API! </Button>
+        <CheckBox x:Name="AutoApi" Margin="25,80,580,400"> Автоматически получать API </CheckBox>
+
+        <Label Margin="20,100,660,340">Базовые настройки:</Label>
+        <CheckBox x:Name="SoundPerMessage" Margin="25,130,500,0"> Звуковой сигнал при сообщении </CheckBox>
+        <CheckBox x:Name="BlackList" Margin="25,160,500,0"> Использовать черный список </CheckBox>
+        <CheckBox x:Name="SoundPerError" Margin="25,190,500,0"> Звук при ошибках </CheckBox>
+        <CheckBox x:Name="Startup" Margin="25,220,500,0"> Добавить в автозагрузку </CheckBox>
         
+        <Label Margin="300,100,0,340">Пользовательские настройки:</Label>
+        <CheckBox x:Name="TimeDurationChecker" Margin="305,130,210,0" Checked="EnableDuration" Unchecked="DisableDuration"> Промежуток между сообщениями </CheckBox>
+            <TextBox x:Name = "TimeDuration" Margin="530,125,110,290" Visibility="Hidden"> ЧАСЫ </TextBox>
+        <CheckBox x:Name="BackGroundWork" Margin="305,160,210,0"> Работа всё время в фоне </CheckBox>
+        <Button Height="20" Width="100" Margin="670,0,0,0" Click="CreateQuest" > ДОБАВИТЬ СБЩ. </Button>
+        <Button x:Name="Strt" Height="20" Width="100" Margin="440,0,0,0" Click="StartBot" > ЗАПУСК! </Button>
+        <ScrollViewer x:Name="Scroll" Margin="0,230,0,0" Height="200" Width="750" Background="Beige">
+            <Grid x:Name="Questions" Height="0">
+                <Grid x:Name="QuestionItem" Height="40" Width="750" VerticalAlignment="Top" Margin="0,50,0,0" Visibility="Hidden" Background="Linen">
+                    <Label Margin="0,0,450,0" FontSize="10"> СООБЩЕНИЕ: </Label>
+                    <Label Margin="0,15,450,0" FontSize="10"> % СООБЩЕНИЕ % </Label>
+                    <Label Margin="350,0,0,0" FontSize="10"> ОТВЕТ: </Label>
+                    <Label Margin="350,15,0,0" FontSize="10"> % ОТВЕТ % </Label>
+                    <Button Height="40" Width="100" Margin="650,0,0,0" FontSize="20"> УДАЛИТЬ </Button>
+                </Grid>
+            </Grid>
+
+        </ScrollViewer>
     </Grid>
 </Window>
