@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VkConversationBot.EXMPL", "VkConversationBot.EXMPL\VkConversationBot.EXMPL.csproj", "{B800BC4B-81D4-4B3A-A668-FFF4DB7F299B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B800BC4B-81D4-4B3A-A668-FFF4DB7F299B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B800BC4B-81D4-4B3A-A668-FFF4DB7F299B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B800BC4B-81D4-4B3A-A668-FFF4DB7F299B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B800BC4B-81D4-4B3A-A668-FFF4DB7F299B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
