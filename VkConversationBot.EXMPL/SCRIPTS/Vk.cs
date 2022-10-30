@@ -39,23 +39,15 @@ namespace VkConversationBot.EXMPL.SCRIPTS
 
         [Obsolete("Obsolete")]
         public void Start() {
-            try
-            {
-                VkApi.Authorize(new ApiAuthParams
-                {
-                    AccessToken = Token,
-                    Settings = Settings.All
-                });
-                One_Tick();
-            }
-            catch (Exception e) {
-                MessageBox.Show($"{e}");
-            }
+            VkApi.Authorize(new ApiAuthParams {
+                AccessToken = Token,
+                Settings = Settings.All
+            });
+            One_Tick();
         }
 
         [Obsolete("Obsolete")]
-        private void One_Tick()
-        {
+        private void One_Tick() {
             while (true) {
                 Thread.Sleep(100);
                 Receive();
@@ -84,8 +76,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS
         }
         
         [Obsolete]
-        private object[] GetMessage()
-        {
+        private object[] GetMessage() {
             long? userid = 0;
 
             var messages = VkApi.Messages.GetDialogs(new MessagesDialogsGetParams {
@@ -102,7 +93,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS
                         userid = id.Value;
                     }
                 var keys = new object[]{ message, keyname, userid };
-                    //VkApi.Messages.MarkAsRead(msg.PeerId.ToString());
+                    VkApi.Messages.MarkAsRead((IdOfConversation + 2000000000).ToString());
                         return keys;
             }
             return null;

@@ -18,13 +18,11 @@ namespace VkConversationBot.EXMPL {
 
         [Obsolete("Obsolete")]
         private void StartBot(object sender, RoutedEventArgs routedEventArgs) {
-            try
-            {
+            try {
                 new Vk(_questItems, Access.Text, long.Parse(Id.Text)).Start();
                 Strt.Visibility = Visibility.Hidden;
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 MessageBox.Show($"{e}");
             }
         }
