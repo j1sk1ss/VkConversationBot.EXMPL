@@ -1,30 +1,26 @@
-﻿using System.Windows;
+﻿using System;
+using System.Linq;
+using System.Windows;
 using System.Windows.Navigation;
 using mshtml;
 
-namespace VkConversationBot.EXMPL.Windows
+namespace VkConversationBot.EXMPL
 {
     public partial class Authorisation : Window
     {
-        HTMLDocument document = new ();
-        public Authorisation(MainWindow mainWindow)
-        {
+        private HTMLDocument _document = new ();
+        public Authorisation(MainWindow mainWindow) {
             InitializeComponent();
             const string url = "https://oauth.vk.com/authorize?client_id=6287487&scope=1073737727&redirect_uri=https://" +
                                "oauth.vk.com/blank.html&display=page&response_type=token&revoke=1";
             Browser.Navigate(url);
         }
-
-        private void Browser_LoadCompleted(object sender, NavigationEventArgs e)
-        {
-            var doc = Browser.Document as HTMLDocument;
-            foreach( mshtml.IHTMLElement element in doc.getElementsByTagName( "input" ) ) {
-                if(element.getAttribute("value") != null) {
-                    element.setAttribute( "value", "123" );
-                    break;
-                }
+        private string Token { get; set; }
+        private void Browser_LoadCompleted(object sender, NavigationEventArgs e) {
+            if (Browser.Source != new Uri("https://oauth.vk.com/authorize?client_id=6287487&scope=1073737727&redirect_uri=https://" +
+                                          "oauth.vk.com/blank.html&display=page&response_type=token&revoke=1")) {
+                Token = Browser.Source.ToString();
             }
-
         }
     }
 }

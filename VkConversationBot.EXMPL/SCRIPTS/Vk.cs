@@ -1,32 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using VkNet;
 using VkNet.Model;
 using VkNet.Model.RequestParams;
 using VkNet.Enums.Filters;
 using VkNet.Model.Keyboard;
 using System.Windows.Threading;
-using VkConversationBot.EXMPL.Windows;
 
 namespace VkConversationBot.EXMPL.SCRIPTS
 {
     public class Vk {
         public Vk(List<QuestionClass> questionClasses, string token, long idOfConversation) {
             DataBase = new Dictionary<string, string>();
+            BlackWords = new List<List<string>>();
             foreach (var quest in questionClasses) {
                 DataBase!.Add(quest.Quest, quest.Answer);
+                BlackWords!.Add(quest.BlackWords);
             }
             Token = token;
-            IdOfConversation = idOfConversation;
+                IdOfConversation = idOfConversation;
         }
-        
         private Dictionary<string, string> DataBase { get; }
         private string Token { get; }
         private long IdOfConversation { get; }
-
+        private List<List<string>> BlackWords { get; }
+        
         private static readonly VkApi VkApi = new();
-
+        
         public readonly DispatcherTimer Dispatcher = new () {
             Interval = new TimeSpan(100)
         };
@@ -41,14 +43,24 @@ namespace VkConversationBot.EXMPL.SCRIPTS
             Dispatcher.IsEnabled = true;
         }
         private void Receive(object sender, EventArgs e) {
-            var minfo = GetMessage();
+            try {
+                var minfo = GetMessage();
                 if (minfo == null) return;
-            var message = minfo[1].ToString() != "" ? minfo[1].ToString() : minfo[0].ToString();
+                var message = minfo[1].ToString() != "" ? minfo[1].ToString() : minfo[0].ToString();
                 for (var i = 0; i < DataBase.Count; i++) {
                     if (!message!.Contains(DataBase.Keys.ToList()[i])) continue;
+                    for (var j = 0; j < BlackWords[i].Count; j++) {
+                        if (message.Contains(BlackWords[i][j])) continue;
+                        if (j != BlackWords[i].Count - 1) continue;
                         SendMessage(DataBase[DataBase.Keys.ToList()[i]], int.Parse(minfo[2].ToString()!), null);
+                    }
                     break;
                 }
+            }
+            catch (Exception exception) {
+                    MessageBox.Show($"{exception}");
+                throw;
+            }
         }
         private static void SendMessage(string message, long? userid, MessageKeyboard keyboard) {
             VkApi.Messages.Send(new MessagesSendParams {
@@ -60,7 +72,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS
         }
         private object[] GetMessage() {
             long? userid = 0;
-            var messages = VkApi.Messages.GetDialogs(new MessagesDialogsGetParams { // Change GetDialogs
+            var messages = VkApi.Messages.GetDialogs(new MessagesDialogsGetParams { 
                 Count = 100,
                 Unread = true
             });

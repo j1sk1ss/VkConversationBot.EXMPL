@@ -1,17 +1,17 @@
-﻿<Window x:Class="VkConversationBot.EXMPL.Windows.QuestionClass"
+﻿<Window x:Class="VkConversationBot.EXMPL.QuestionClass"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:VkConversationBot.EXMPL"
         mc:Ignorable="d"
-        Title="Конструктор запроса" Height="450" Width="450"
+        Title="Конструктор запроса" Height="250" Width="450"
         ResizeMode="NoResize">
-    <Grid>
-        <Label HorizontalAlignment="Center" FontSize="45"> ЗАПРОС </Label>
-        <TextBox x:Name="Question" Margin="10,90,10,270"> СООБЩЕНИЕ </TextBox>
-        <TextBox x:Name="Ans" Margin="10,190,10,170"> ОТВЕТ </TextBox>
-        <TextBox x:Name="Bw" Margin="10,290,10,100"> ЧЕРНЫЙ СПИСОК </TextBox>
-        <Button Margin="0,360,0,0" FontSize="30" Click="Set"> СОЗДАТЬ ЗАПРОС </Button>
+    <Grid Margin="0,100,0,0">
+        <TextBox Height="90" Width="200" x:Name="Question" Margin="-226,-180,0,0"> СООБЩЕНИЕ </TextBox>
+        <TextBox Height="90" Width="200"  x:Name="Ans" Margin="226,-180,0,0"> ОТВЕТ </TextBox>
+        <TextBox Height="35" Width="425" x:Name="Bw" Margin="0,-30,0,0"> ЧЕРНЫЙ СПИСОК </TextBox>
+        <Button x:Name="Create" Height="40" Width="100" Margin="0,60,324,0" FontSize="10" Click="Set"> СОЗДАТЬ ЗАПРОС </Button>
+        <Button Height="40" Width="100" Margin="0,60,104,0" FontSize="10" Click="Hide"> ЗАКРЫТЬ ЗАПРОС </Button>
     </Grid>
 </Window>
