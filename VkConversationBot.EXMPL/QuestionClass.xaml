@@ -11,7 +11,7 @@
         <Label HorizontalAlignment="Center" FontSize="45"> ЗАПРОС </Label>
         <TextBox x:Name="Question" Margin="10,90,10,270"> СООБЩЕНИЕ </TextBox>
         <TextBox x:Name="Ans" Margin="10,190,10,170"> ОТВЕТ </TextBox>
-        <TextBox x:Name="Bw" Margin="10,290,10,100"> ЧЕРНЫЙ СПИСОК (Через , без пробелов) </TextBox>
+        <TextBox x:Name="Bw" Margin="10,290,10,100"> ЧЕРНЫЙ СПИСОК </TextBox>
         <Button Margin="0,360,0,0" FontSize="30" Click="Set"> СОЗДАТЬ ЗАПРОС </Button>
     </Grid>
 </Window>

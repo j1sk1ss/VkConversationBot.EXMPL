@@ -27,6 +27,7 @@
         <CheckBox x:Name="BackGroundWork" Margin="305,160,210,0"> Работа всё время в фоне </CheckBox>
         <Button Height="20" Width="100" Margin="670,0,0,0" Click="CreateQuest" > ДОБАВИТЬ СБЩ. </Button>
         <Button x:Name="Strt" Height="20" Width="100" Margin="440,0,0,0" Click="StartBot" > ЗАПУСК! </Button>
+        <Button x:Name="End" Height="20" Width="100" Margin="440,0,0,0" Click="StopBot" Visibility="Hidden"> ОСТАНОВИТЬ! </Button>
         <ScrollViewer x:Name="Scroll" Margin="0,230,0,0" Height="200" Width="750" Background="Beige">
             <Grid x:Name="Questions" Height="0">
                 <Grid x:Name="QuestionItem" Height="40" Width="750" VerticalAlignment="Top" Margin="0,50,0,0" Visibility="Hidden" Background="Linen">

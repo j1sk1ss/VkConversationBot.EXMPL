@@ -10,17 +10,17 @@ namespace VkConversationBot.EXMPL.Windows {
             BlackWords = new List<string>();
             Main = mainWindow;
         }
-        private MainWindow Main { get; set; }
-        public string Quest { get; set; }
-        public string Answer { get; set; }
-        public List<string> BlackWords { get; set; }
+        private MainWindow Main { get; }
+        public string Quest { get; private set; }
+        public string Answer { get; private set; }
+        public List<string> BlackWords { get; }
 
         private void Set(object sender, RoutedEventArgs routedEventArgs) {
             Quest = Question.Text;
             Answer = Ans.Text;
-            foreach (var item in Bw.Text.Split(",")) {
+            if (Bw.Text.Contains(",")) foreach (var item in Bw.Text.Split(",")) {
                 BlackWords.Add(item);
-            }
+            } else BlackWords.Add(Bw.Text);
             Main.AddToList(this);
             Application.Current.Windows[1]!.Close();
         }
