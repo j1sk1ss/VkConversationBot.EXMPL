@@ -16,11 +16,11 @@ namespace VkConversationBot.EXMPL {
         public List<string> BlackWords { get; }
 
         private void Set(object sender, RoutedEventArgs routedEventArgs) {
-            Quest = Question.Text;
-            Answer = Ans.Text;
+            Quest = Question.Text.ToLower();
+            Answer = Ans.Text.ToLower();
                 if (Bw.Text.Contains(",")) foreach (var item in Bw.Text.Split(",")) {
-                    BlackWords.Add(item);
-                } else BlackWords.Add("");
+                    BlackWords.Add(item.ToLower());
+                } else BlackWords.Add(Bw.Text.ToLower());
             Main.AddToList(this);
             Create.Visibility = Visibility.Hidden;
                 Hide();

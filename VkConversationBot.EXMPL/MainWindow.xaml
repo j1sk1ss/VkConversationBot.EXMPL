@@ -4,34 +4,32 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="VK bot by Fot" Height="500" Width="800"
-        ResizeMode="NoResize" WindowStyle="ToolWindow"
-        Closed="Close"
-        >
+        Title="Bot Manager" Height="500" Width="800"
+        ResizeMode="NoResize" WindowStyle="SingleBorderWindow"
+        Closed="Save">
     <Grid Margin="0,20,0,0">
-        <TextBox Height="25" Width="100" Margin="-650,-450,0,0"> Логин ВК </TextBox>
-        <TextBox Height="25" Width="100" Margin="-650,-390,0,0"> Пароль ВК </TextBox>
-        <TextBox x:Name="Access" Height="25" Width="100" Margin="-650,-310,0,0"> Access token </TextBox>
-        <TextBox x:Name="Id" Height="25" Width="100" Margin="-400,-310,0,0"> ID conversation </TextBox>
-        <Button Click="GenerateApi" Height="55" Width="100" Margin="-400,-420,0,0"> Получить API! </Button>
-        <CheckBox x:Name="AutoApi" Margin="25,80,580,400"> Автоматически получать API </CheckBox>
 
+        <TextBox x:Name="Access" Height="25" Width="100" Margin="-650,-360,0,0"> Токен </TextBox>
+        <TextBox x:Name="Id" Height="25" Width="100" Margin="-650,-440,0,0"> Ссылка </TextBox>
         <Label Margin="20,100,660,340">Базовые настройки:</Label>
-        <CheckBox x:Name="SoundPerMessage" Margin="25,130,500,0"> Звуковой сигнал при сообщении </CheckBox>
-        <CheckBox x:Name="BlackList" Margin="25,160,500,0"> Использовать черный список </CheckBox>
-        <CheckBox x:Name="SoundPerError" Margin="25,190,500,0"> Звук при ошибках </CheckBox>
-        <CheckBox x:Name="Startup" Margin="25,220,500,0"> Добавить в автозагрузку </CheckBox>
-        
+            <CheckBox x:Name="SoundPerMessage" Margin="25,130,500,0"> Звуковой сигнал при сообщении </CheckBox>
+                <CheckBox x:Name="BlackList" Margin="25,160,500,0"> Использовать черный список </CheckBox>
+        <CheckBox x:Name="Startup" Margin="25,190,500,0"> Добавить в автозагрузку </CheckBox>
         <Label Margin="300,100,0,340">Пользовательские настройки:</Label>
         <CheckBox x:Name="TimeDurationChecker" Margin="305,130,210,0" Checked="EnableDuration" Unchecked="DisableDuration"> Промежуток между сообщениями </CheckBox>
             <TextBox x:Name = "TimeDuration" Margin="530,125,110,290" Visibility="Hidden"> ЧАСЫ </TextBox>
         <CheckBox x:Name="BackGroundWork" Margin="305,160,210,0"> Работа всё время в фоне </CheckBox>
-        <Button Height="20" Width="100" Margin="670,0,0,0" Click="CreateQuest" > ДОБАВИТЬ СБЩ. </Button>
-        <Button x:Name="Strt" Height="20" Width="100" Margin="440,0,0,0" Click="StartBot" > ЗАПУСК! </Button>
-        <Button x:Name="End" Height="20" Width="100" Margin="440,0,0,0" Click="StopBot" Visibility="Hidden"> ОСТАНОВИТЬ! </Button>
-        <ScrollViewer x:Name="Scroll" Margin="0,230,0,0" Height="200" Width="750" Background="Beige">
+            <Button Height="20" Width="100" Margin="670,0,0,0" Click="CreateQuest" > ДОБАВИТЬ СБЩ. </Button>
+            <Button x:Name="Strt" Height="20" Width="100" Margin="440,0,0,0" Click="StartBot" > ЗАПУСК! </Button>
+            <Button x:Name="End" Height="20" Width="100" Margin="440,0,0,0" Click="StopBot" Visibility="Hidden"> ОСТАНОВИТЬ! </Button>
+            <Button x:Name="SaveButton" Height="20" Width="100" Margin="200,0,0,0" Click="Save"> СОХРАНИТЬ! </Button>
+            <Canvas Background="Black" Height="1" Width="750" Margin="0,30,0,0"></Canvas>
+                <Canvas Background="Black" Height="1" Width="750" Margin="0,435,0,0"></Canvas>
+                    <Canvas Background="Black" Height="200" Width="1" Margin="0,235,750,0"></Canvas>
+                        <Canvas Background="Black" Height="200" Width="1" Margin="0,235,-750,0"></Canvas>
+        <ScrollViewer BorderBrush="Black" x:Name="Scroll" Margin="0,230,0,0" Height="200" Width="750">
             <Grid x:Name="Questions" Height="0">
-            </Grid>
+               </Grid> 
         </ScrollViewer>
     </Grid>
 </Window>

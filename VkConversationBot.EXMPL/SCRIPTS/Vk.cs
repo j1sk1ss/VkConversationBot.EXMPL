@@ -12,7 +12,8 @@ using System.Windows.Threading;
 namespace VkConversationBot.EXMPL.SCRIPTS
 {
     public class Vk {
-        public Vk(List<QuestionClass> questionClasses, string token, long idOfConversation) {
+        public Vk(List<QuestionClass> questionClasses, string token, string idOfConversation, Preset preset) {
+            Preset = preset;
             DataBase = new Dictionary<string, string>();
             BlackWords = new List<List<string>>();
             foreach (var quest in questionClasses) {
@@ -20,8 +21,10 @@ namespace VkConversationBot.EXMPL.SCRIPTS
                 BlackWords!.Add(quest.BlackWords);
             }
             Token = token;
-                IdOfConversation = idOfConversation;
+                IdOfConversation = long.Parse(idOfConversation.Split("c")[2]);
         }
+
+        private static Preset Preset { get; set; }
         private Dictionary<string, string> DataBase { get; }
         private string Token { get; }
         private long IdOfConversation { get; }
@@ -34,10 +37,16 @@ namespace VkConversationBot.EXMPL.SCRIPTS
         };
         public void Start() {
             if (!VkApi.IsAuthorized) {
-                VkApi.Authorize(new ApiAuthParams {
-                    AccessToken = Token,
-                    Settings = Settings.All
-                });
+                try {
+                    VkApi.Authorize(new ApiAuthParams {
+                        AccessToken = Token,
+                        Settings = Settings.All
+                    });
+                }
+                catch (Exception e) {
+                    MessageBox.Show($"{e}", "Error with API!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    throw;
+                }
                 Dispatcher.Tick += new EventHandler(Receive);
             }
             Dispatcher.IsEnabled = true;
@@ -48,9 +57,9 @@ namespace VkConversationBot.EXMPL.SCRIPTS
                 if (minfo == null) return;
                 var message = minfo[1].ToString() != "" ? minfo[1].ToString() : minfo[0].ToString();
                 for (var i = 0; i < DataBase.Count; i++) {
-                    if (!message!.Contains(DataBase.Keys.ToList()[i])) continue;
+                    if (!message!.ToLower().Contains(DataBase.Keys.ToList()[i])) continue;
                     for (var j = 0; j < BlackWords[i].Count; j++) {
-                        if (message.Contains(BlackWords[i][j])) continue;
+                        if (message.ToLower().Contains(BlackWords[i][j])) continue;
                         if (j != BlackWords[i].Count - 1) continue;
                         SendMessage(DataBase[DataBase.Keys.ToList()[i]], int.Parse(minfo[2].ToString()!), null);
                     }
@@ -58,11 +67,12 @@ namespace VkConversationBot.EXMPL.SCRIPTS
                 }
             }
             catch (Exception exception) {
-                    MessageBox.Show($"{exception}");
+                    MessageBox.Show($"{exception}", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw;
             }
         }
         private static void SendMessage(string message, long? userid, MessageKeyboard keyboard) {
+            if (Preset.SoundPerMasg) System.Media.SystemSounds.Asterisk.Play();
             VkApi.Messages.Send(new MessagesSendParams {
                 Message = message,
                 PeerId = userid,

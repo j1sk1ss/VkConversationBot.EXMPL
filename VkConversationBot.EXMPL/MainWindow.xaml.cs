@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,22 +12,24 @@ using VkConversationBot.EXMPL.SCRIPTS;
 namespace VkConversationBot.EXMPL {
     public partial class MainWindow {
         private readonly List<QuestionClass> _questItems = new();
+        private readonly Preset _preset;
         public MainWindow() {
             InitializeComponent();
             try
             {
                 if (!File.Exists("Preset.json")) return;
-                var datalist = JsonConvert.DeserializeObject<Preset>(File.ReadAllText("Preset.json"));
-                if (datalist == null) return;
-                    Access.Text = datalist.Api;
-                    Id.Text = datalist.ConId.ToString();
-                    SoundPerMessage.IsChecked = datalist.SoundPerMasg;
-                    SoundPerError.IsChecked = datalist.SoundPerErr;
-                    BlackList.IsChecked = datalist.BlackList;
-                    SoundPerMessage.IsChecked = datalist.AutoLoad;
-                    TimeDurationChecker.IsChecked = datalist.DurationUsage;
-                    BackGroundWork.IsChecked = datalist.Background;
-                    TimeDuration.Text = datalist.Duration.ToString();
+                _preset = JsonConvert.DeserializeObject<Preset>(File.ReadAllText("Preset.json"));
+                if (_preset == null) return;
+                    Access.Text = _preset.Api;
+                    Id.Text = _preset.ConId;
+                    SoundPerMessage.IsChecked = _preset.SoundPerMasg;
+                    BlackList.IsChecked = _preset.BlackList;
+                    SoundPerMessage.IsChecked = _preset.AutoLoad;
+                    TimeDurationChecker.IsChecked = _preset.DurationUsage;
+                    BackGroundWork.IsChecked = _preset.Background;
+                    TimeDuration.Text = _preset.Duration;
+                    //_questItems = _preset.Quests;
+                    UpdateList();
             }
             catch (Exception e)
             {
@@ -40,7 +44,7 @@ namespace VkConversationBot.EXMPL {
         [Obsolete("Obsolete")]
         private void StartBot(object sender, RoutedEventArgs routedEventArgs) {
             try {
-                _bot = new Vk(_questItems, Access.Text, long.Parse(Id.Text));
+                _bot = new Vk(_questItems, Access.Text, Id.Text, _preset);
                     _bot.Start();
                     Strt.Visibility = Visibility.Hidden;
                     End.Visibility = Visibility.Visible;
@@ -51,8 +55,9 @@ namespace VkConversationBot.EXMPL {
         }
         private void StopBot(object sender, RoutedEventArgs routedEventArgs) {
             _bot.Dispatcher.IsEnabled = false;
+            Strt.Visibility = Visibility.Visible;
+            End.Visibility = Visibility.Hidden;
         }
-
         public void AddToList(QuestionClass qItem) {
             try {
                 _questItems.Add(qItem);
@@ -74,7 +79,6 @@ namespace VkConversationBot.EXMPL {
                 throw;
             }
         }
-
         private void ShowQuest(object sender, RoutedEventArgs routedEventArgs) {
             try {
                 var x = sender as Button;
@@ -95,8 +99,21 @@ namespace VkConversationBot.EXMPL {
                     Height = 40, Width = 750,
                     VerticalAlignment = VerticalAlignment.Top,
                     Margin = new Thickness(0,5 * (10 * i),0,0),
-                    Background = Brushes.Linen 
                 };
+                item.Children.Add(new Canvas()
+                {
+                    Height = 1,
+                    Width = 710,
+                    Background = Brushes.Black,
+                    Margin = new Thickness(-30,-40,0,0)
+                });
+                item.Children.Add(new Canvas()
+                {
+                    Height = 1,
+                    Width = 710,
+                    Background = Brushes.Black,
+                    Margin = new Thickness(-30,40,0,0)
+                });
                 item.Children.Add(new Label() {
                     Margin = new Thickness(0,0,450,0),
                     FontSize = 10, Content = $" СООБЩЕНИЕ: \n{_questItems[i].Quest}"
@@ -120,33 +137,39 @@ namespace VkConversationBot.EXMPL {
                     Questions.Children.Add(item);
             }
         }
-
         private void EnableDuration(object sender, RoutedEventArgs e) {
             TimeDuration.Visibility = Visibility.Visible;
         }
-
         private void DisableDuration(object sender, RoutedEventArgs e) {
             TimeDuration.Text = "ЧАСЫ";
             TimeDuration.Visibility = Visibility.Hidden;
         }
-
         private void GenerateApi(object sender, RoutedEventArgs e) {
             var authorisation = new Authorisation(this);
             authorisation.Show();
         }
-
-        private void Close(object sender, EventArgs e) {
-            File.WriteAllText("Preset.json", JsonConvert.SerializeObject(new Preset() {
-                Api = Access.Text,
-                ConId = int.Parse(Id.Text),
-                SoundPerMasg = SoundPerMessage.IsChecked != null,
-                SoundPerErr = SoundPerError.IsChecked != null,
-                BlackList = BlackList.IsChecked != null,
-                AutoLoad = SoundPerMessage.IsChecked != null,
-                DurationUsage = TimeDurationChecker.IsChecked != null,
-                Duration = int.Parse(TimeDuration.Text),
-                Background = BackGroundWork.IsChecked != null,
-            }));
+        private void Save(object sender, EventArgs e) {
+            try {
+                File.WriteAllText("Preset.json", JsonConvert.SerializeObject(new Preset() {
+                    Api = Access.Text,
+                    ConId =Id.Text,
+                    SoundPerMasg = SoundPerMessage.IsChecked.Value,
+                    BlackList = BlackList.IsChecked.Value,
+                    AutoLoad = SoundPerMessage.IsChecked.Value,
+                    DurationUsage = TimeDurationChecker.IsChecked.Value,
+                    Duration = TimeDuration.Text,
+                    Background = BackGroundWork.IsChecked.Value,
+                    
+                    //Quests = _questItems
+                }, Formatting.None, new JsonSerializerSettings()
+                { 
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }));
+            }
+            catch (Exception exception) {
+                MessageBox.Show($"{exception}");
+                throw;
+            }
         }
     }
 }
