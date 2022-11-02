@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="LiveCharts" Version="0.9.7" />
+      <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta2" />
       <PackageReference Include="Unofficial.Microsoft.mshtml" Version="7.0.3300" />
       <PackageReference Include="VkNet" Version="1.72.0" />
@@ -18,7 +20,21 @@
 
     <ItemGroup>
       <Folder Include="IMG" />
-      <Folder Include="Windows" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Remove="Authorisation.xaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Authorisation.xaml.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ApplicationDefinition Include="Windows\App.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+      </ApplicationDefinition>
     </ItemGroup>
 
 </Project>

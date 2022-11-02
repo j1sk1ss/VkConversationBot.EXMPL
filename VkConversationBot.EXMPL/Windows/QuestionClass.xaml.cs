@@ -1,20 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 
-namespace VkConversationBot.EXMPL {
+namespace VkConversationBot.EXMPL.Windows {
     public partial class QuestionClass {
         public QuestionClass(MainWindow mainWindow) {
             InitializeComponent();
             Quest = "";
-                Answer = "";
-                    BlackWords = new List<string>();
-                        Main = mainWindow;
+            Answer = "";
+            BlackWords = new List<string>();
+            History = new List<int>() {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+            Main = mainWindow;
         }
+        public List<int> History { get; set; } 
         private MainWindow Main { get; }
         public string Quest { get; private set; }
         public string Answer { get; private set; }
         public List<string> BlackWords { get; }
-
         private void Set(object sender, RoutedEventArgs routedEventArgs) {
             Quest = Question.Text.ToLower();
             Answer = Ans.Text.ToLower();
@@ -24,9 +25,6 @@ namespace VkConversationBot.EXMPL {
             Main.AddToList(this);
             Create.Visibility = Visibility.Hidden;
                 Hide();
-        }
-        private void Hide(object sender, RoutedEventArgs routedEventArgs) {
-            Hide();
         }
     }
 }

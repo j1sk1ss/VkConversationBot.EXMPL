@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Newtonsoft.Json;
 using VkConversationBot.EXMPL.SCRIPTS;
+using VkConversationBot.EXMPL.Windows;
 
 namespace VkConversationBot.EXMPL {
     public partial class MainWindow {
@@ -15,8 +14,7 @@ namespace VkConversationBot.EXMPL {
         private readonly Preset _preset;
         public MainWindow() {
             InitializeComponent();
-            try
-            {
+            try {
                 if (!File.Exists("Preset.json")) return;
                 _preset = JsonConvert.DeserializeObject<Preset>(File.ReadAllText("Preset.json"));
                 if (_preset == null) return;
@@ -31,8 +29,7 @@ namespace VkConversationBot.EXMPL {
                     //_questItems = _preset.Quests;
                     UpdateList();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 MessageBox.Show($"{e}");
                 throw;
             }
@@ -44,7 +41,7 @@ namespace VkConversationBot.EXMPL {
         [Obsolete("Obsolete")]
         private void StartBot(object sender, RoutedEventArgs routedEventArgs) {
             try {
-                _bot = new Vk(_questItems, Access.Text, Id.Text, _preset);
+                _bot ??= new Vk(_questItems, Access.Text, Id.Text, _preset);
                     _bot.Start();
                     Strt.Visibility = Visibility.Hidden;
                     End.Visibility = Visibility.Visible;
@@ -82,10 +79,8 @@ namespace VkConversationBot.EXMPL {
         private void ShowQuest(object sender, RoutedEventArgs routedEventArgs) {
             try {
                 var x = sender as Button;
-                _questItems[int.Parse(x!.Name[1..])].Ans.IsEnabled = false;
-                    _questItems[int.Parse(x!.Name[1..])].Question.IsEnabled = false;
-                         _questItems[int.Parse(x!.Name[1..])].Bw.IsEnabled = false;
-                _questItems[int.Parse(x!.Name[1..])].Show();
+                var k = new ExtendedQuest(_questItems[int.Parse(x!.Name[1..])]);
+                k.Show();
             }
             catch (Exception e) {
                 MessageBox.Show($"{e}");
@@ -100,15 +95,13 @@ namespace VkConversationBot.EXMPL {
                     VerticalAlignment = VerticalAlignment.Top,
                     Margin = new Thickness(0,5 * (10 * i),0,0),
                 };
-                item.Children.Add(new Canvas()
-                {
+                item.Children.Add(new Canvas() {
                     Height = 1,
                     Width = 710,
                     Background = Brushes.Black,
                     Margin = new Thickness(-30,-40,0,0)
                 });
-                item.Children.Add(new Canvas()
-                {
+                item.Children.Add(new Canvas() {
                     Height = 1,
                     Width = 710,
                     Background = Brushes.Black,
@@ -144,21 +137,17 @@ namespace VkConversationBot.EXMPL {
             TimeDuration.Text = "ЧАСЫ";
             TimeDuration.Visibility = Visibility.Hidden;
         }
-        private void GenerateApi(object sender, RoutedEventArgs e) {
-            var authorisation = new Authorisation(this);
-            authorisation.Show();
-        }
         private void Save(object sender, EventArgs e) {
             try {
                 File.WriteAllText("Preset.json", JsonConvert.SerializeObject(new Preset() {
                     Api = Access.Text,
                     ConId =Id.Text,
-                    SoundPerMasg = SoundPerMessage.IsChecked.Value,
-                    BlackList = BlackList.IsChecked.Value,
-                    AutoLoad = SoundPerMessage.IsChecked.Value,
-                    DurationUsage = TimeDurationChecker.IsChecked.Value,
+                    SoundPerMasg = SoundPerMessage.IsChecked != null && SoundPerMessage.IsChecked.Value,
+                    BlackList = BlackList.IsChecked != null && BlackList.IsChecked.Value,
+                    AutoLoad = SoundPerMessage.IsChecked != null && SoundPerMessage.IsChecked.Value,
+                    DurationUsage = TimeDurationChecker.IsChecked != null && TimeDurationChecker.IsChecked.Value,
                     Duration = TimeDuration.Text,
-                    Background = BackGroundWork.IsChecked.Value,
+                    Background = BackGroundWork.IsChecked != null && BackGroundWork.IsChecked.Value,
                     
                     //Quests = _questItems
                 }, Formatting.None, new JsonSerializerSettings()

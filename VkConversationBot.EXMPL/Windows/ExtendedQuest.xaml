@@ -1,0 +1,25 @@
+﻿<Window x:Class="VkConversationBot.EXMPL.Windows.ExtendedQuest"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:local="clr-namespace:VkConversationBot.EXMPL.Windows"
+        mc:Ignorable="d"
+        Title="Extended Information" Height="450" Width="800">
+    <Grid>
+        <Label x:Name="Number" FontSize="20" Margin="0,0,0,290"> Запрос номер: </Label>
+        <Label x:Name="Question" FontSize="20" Margin="0,40,0,290"> Сообщение: </Label>
+        <Label x:Name="Answer" FontSize="20" Margin="0,80,0,290"> Ответ: </Label>
+        <Label x:Name="BlackList" FontSize="20" Margin="0,120,0,250"> Чёрный список: </Label>
+        <Grid>
+            <lvc:CartesianChart Height="200"
+                                Margin="0,100,0,0"
+                                LegendLocation="Bottom"
+                                Hoverable="True"
+                                x:Name="ExtendedInfo"
+                                >
+            </lvc:CartesianChart>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using VkConversationBot.EXMPL.Windows;
 
 namespace VkConversationBot.EXMPL.SCRIPTS {
     public class Preset {

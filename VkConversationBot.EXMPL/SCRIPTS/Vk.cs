@@ -8,6 +8,7 @@ using VkNet.Model.RequestParams;
 using VkNet.Enums.Filters;
 using VkNet.Model.Keyboard;
 using System.Windows.Threading;
+using VkConversationBot.EXMPL.Windows;
 
 namespace VkConversationBot.EXMPL.SCRIPTS
 {
@@ -16,14 +17,16 @@ namespace VkConversationBot.EXMPL.SCRIPTS
             Preset = preset;
             DataBase = new Dictionary<string, string>();
             BlackWords = new List<List<string>>();
-            foreach (var quest in questionClasses) {
-                DataBase!.Add(quest.Quest, quest.Answer);
-                BlackWords!.Add(quest.BlackWords);
-            }
+            Quests = new List<QuestionClass>();
+            Quests = questionClasses;
+                foreach (var quest in Quests) {
+                    DataBase!.Add(quest.Quest, quest.Answer);
+                    BlackWords!.Add(quest.BlackWords);
+                }
             Token = token;
                 IdOfConversation = long.Parse(idOfConversation.Split("c")[2]);
         }
-
+        private List<QuestionClass> Quests { get; set; } 
         private static Preset Preset { get; set; }
         private Dictionary<string, string> DataBase { get; }
         private string Token { get; }
@@ -61,6 +64,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS
                     for (var j = 0; j < BlackWords[i].Count; j++) {
                         if (message.ToLower().Contains(BlackWords[i][j])) continue;
                         if (j != BlackWords[i].Count - 1) continue;
+                        Quests[i].History[DateTime.Now.Hour]++;
                         SendMessage(DataBase[DataBase.Keys.ToList()[i]], int.Parse(minfo[2].ToString()!), null);
                     }
                     break;
@@ -72,6 +76,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS
             }
         }
         private static void SendMessage(string message, long? userid, MessageKeyboard keyboard) {
+            if (Preset.DurationUsage) if (!CheckDuration(userid)) return;
             if (Preset.SoundPerMasg) System.Media.SystemSounds.Asterisk.Play();
             VkApi.Messages.Send(new MessagesSendParams {
                 Message = message,
@@ -79,6 +84,13 @@ namespace VkConversationBot.EXMPL.SCRIPTS
                 RandomId = new Random().Next(),
                 Keyboard = keyboard
             });
+        }
+        private static bool CheckDuration(long? userid) {
+            return VkApi.Messages.GetHistory(new MessagesGetHistoryParams() {
+                UserId = userid,
+                Count = 1
+            }).Messages.Any(msg => DateTime.Now.Date - msg.Date
+                                   < new TimeSpan(0, int.Parse(Preset.Duration), 0, 0));
         }
         private object[] GetMessage() {
             long? userid = 0;
