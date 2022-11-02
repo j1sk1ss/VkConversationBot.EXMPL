@@ -25,7 +25,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
             Token = token;
                 IdOfConversation = long.Parse(idOfConversation.Split("c")[2]);
         }
-        private MainWindow MainWindow { get; set; }
+        private MainWindow MainWindow { get; }
         private static List<QuestionClass> Quests { get; set; } 
         private static Preset Preset { get; set; }
         private Dictionary<string, string> DataBase { get; }
@@ -38,6 +38,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
         public readonly DispatcherTimer Dispatcher = new () {
             Interval = new TimeSpan(1000)
         };
+        [Obsolete("Obsolete")]
         public void Start() {
             if (!VkApi.IsAuthorized) {
                 try {
@@ -47,13 +48,14 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
                     });
                 }
                 catch (Exception e) {
-                    MessageBox.Show("First update ur API!", "Error with API!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"First update ur API! {e}", "Error with API!", MessageBoxButton.OK, MessageBoxImage.Error);
                     throw;
                 }
-                Dispatcher.Tick += new EventHandler(Receive);
+                Dispatcher.Tick += Receive;
             }
             Dispatcher.IsEnabled = true;
         }
+        [Obsolete("Obsolete")]
         private void Receive(object sender, EventArgs e) {
             try {
                 var minfo = GetMessage();
@@ -62,7 +64,8 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
                 for (var i = 0; i < DataBase.Count; i++) {
                     if (!message!.ToLower().Contains(DataBase.Keys.ToList()[i])) continue;
                     for (var j = 0; j < BlackWords[i].Count; j++) if (message.ToLower().Contains(BlackWords[i][j])) return;
-                    if (MainWindow.BlackList.IsChecked.Value && MainWindow.UserBList.Any(id => minfo[2].ToString() == id)) return;
+                    if (MainWindow.BlackList.IsChecked != null && MainWindow.BlackList.IsChecked.Value && 
+                        MainWindow.UserBList.Any(id => minfo[2].ToString() == id)) return;
                     Quests[i].History[DateTime.Now.Hour].Add(VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.FirstName 
                                                              + " " + VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.LastName);
                     Quests[i].HistoryCount[DateTime.Now.Hour]++;
@@ -91,10 +94,11 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
             }).Messages.Any(msg => DateTime.Now.Date - msg.Date
                                    < new TimeSpan(0, int.Parse(Preset.Duration), 0, 0));
         }
+        [Obsolete("Obsolete")]
         private object[] GetMessage() {
             long? userid = 0;
             var messages = VkApi.Messages.GetDialogs(new MessagesDialogsGetParams { 
-                Count = 10, // ~1
+                Count = 10, // 1
                 Unread = true // false
             });
             foreach (var msg in messages.Messages) {

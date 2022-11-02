@@ -53,43 +53,24 @@ namespace VkConversationBot.EXMPL {
                 MessageBox.Show($"{e}");
             }
         }
-        private void StopBot(object sender, RoutedEventArgs routedEventArgs)
-        {
+        private void StopBot(object sender, RoutedEventArgs routedEventArgs) {
             _bot.Dispatcher.IsEnabled = false;
             Strt.Visibility = Visibility.Visible;
             End.Visibility = Visibility.Hidden;
         }
         public void AddToList(QuestionClass qItem) {
-            try {
-                _questItems.Add(qItem);
-                UpdateList();
-            }
-            catch (Exception e) {
-                MessageBox.Show($"{e}");
-                throw;
-            }
+            _questItems.Add(qItem);
+            UpdateList();
         }
-        private void RemoveQuest(object sender, RoutedEventArgs routedEventArgs) {
-            try {
-                var x = sender as Button;
-                _questItems.RemoveAt(int.Parse(x!.Name[1..]));
-                UpdateList();
-            }
-            catch (Exception e) {
-                MessageBox.Show($"{e}");
-                throw;
-            }
+        private void RemoveFromList(object sender, RoutedEventArgs routedEventArgs) {
+            var x = sender as Button;
+            _questItems.RemoveAt(int.Parse(x!.Name[1..]));
+            UpdateList();
         }
         private void ShowQuest(object sender, RoutedEventArgs routedEventArgs) {
-            try {
-                var x = sender as Button;
-                var k = new ExtendedQuest(_questItems[int.Parse(x!.Name[1..])]);
-                k.Show();
-            }
-            catch (Exception e) {
-                MessageBox.Show($"{e}");
-                throw;
-            }
+            var x = sender as Button;
+            var k = new ExtendedQuest(_questItems[int.Parse(x!.Name[1..])]);
+            k.Show();
         }
         private void UpdateList() {
             Questions.Height = _questItems.Count * 50; 
@@ -101,15 +82,11 @@ namespace VkConversationBot.EXMPL {
                     Margin = new Thickness(0,5 * (10 * i),0,0),
                 };
                 item.Children.Add(new Canvas() {
-                    Height = 1,
-                    Width = 710,
-                    Background = Brushes.Black,
+                    Height = 1, Width = 710, Background = Brushes.Black,
                     Margin = new Thickness(-30,-40,0,0)
                 });
                 item.Children.Add(new Canvas() {
-                    Height = 1,
-                    Width = 710,
-                    Background = Brushes.Black,
+                    Height = 1, Width = 710, Background = Brushes.Black,
                     Margin = new Thickness(-30,40,0,0)
                 });
                 item.Children.Add(new Label() {
@@ -124,15 +101,15 @@ namespace VkConversationBot.EXMPL {
                     Name = $"b{i}", Content = "УДАЛИТЬ",
                     Margin = new Thickness(600, -20, 0, 0),
                     Height = 15, Width = 80, FontSize = 10
-                }; x.Click += RemoveQuest;
+                }; x.Click += RemoveFromList;
                 var y = new Button() {
                     Name = $"v{i}", Content = "ПОДРОБНЕЕ",
                     Margin = new Thickness(600, 20, 0, 0),
                     Height = 15, Width = 80, FontSize = 10
                 }; y.Click += ShowQuest;
-                 item.Children.Add(x);
-                 item.Children.Add(y);
-                    Questions.Children.Add(item);
+                     item.Children.Add(x);
+                        item.Children.Add(y);
+                 Questions.Children.Add(item);
             }
         }
         private void EnableDuration(object sender, RoutedEventArgs e) {
@@ -148,16 +125,15 @@ namespace VkConversationBot.EXMPL {
                 File.WriteAllText("Preset.json", JsonConvert.SerializeObject(new Preset() {
                     Api = Access.Text,
                     ConId =Id.Text,
-                    SoundPerMasg = SoundPerMessage.IsChecked != null && SoundPerMessage.IsChecked.Value,
-                    BlackListUsage = BlackList.IsChecked != null && BlackList.IsChecked.Value,
-                    AutoLoad = Startup.IsChecked != null && Startup.IsChecked.Value,
-                    DurationUsage = TimeDurationChecker.IsChecked != null && TimeDurationChecker.IsChecked.Value,
+                        SoundPerMasg = SoundPerMessage.IsChecked != null && SoundPerMessage.IsChecked.Value,
+                        BlackListUsage = BlackList.IsChecked != null && BlackList.IsChecked.Value,
+                        AutoLoad = Startup.IsChecked != null && Startup.IsChecked.Value,
+                        DurationUsage = TimeDurationChecker.IsChecked != null && TimeDurationChecker.IsChecked.Value,
                     Duration = TimeDuration.Text,
-                    Background = BackGroundWork.IsChecked != null && BackGroundWork.IsChecked.Value,
+                        Background = BackGroundWork.IsChecked != null && BackGroundWork.IsChecked.Value,
                     BlackList = UserBList,
                     //Quests = _questItems
-                }, Formatting.None, new JsonSerializerSettings()
-                { 
+                }, Formatting.None, new JsonSerializerSettings() { 
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 }));
             }
@@ -169,8 +145,7 @@ namespace VkConversationBot.EXMPL {
         private static void SetStartup() {
             var key = Registry.CurrentUser.
                 OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            key!.SetValue("Conversation bot", System.Reflection.Assembly.GetExecutingAssembly().Location);         
-
+            key!.SetValue("Conversation bot", System.Reflection.Assembly.GetExecutingAssembly().Location);
         }
         public List<string> UserBList { get; set; }
         private void UserBlackList(object sender, RoutedEventArgs e) {

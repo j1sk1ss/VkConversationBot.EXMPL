@@ -10,15 +10,15 @@ namespace VkConversationBot.EXMPL.Windows {
             BlackWords = new List<string>();
             History = new List<List<string>>() {
                 new(){""},new(){""},new(){""},new(){""},new(){""},new(){""},
-                new(){""},new(){""},new(){""},new(){""},new(){""},new(){""},new(){""},
-                new(){""},new(){""},new(){""},new(){""},new(){""},new(){""},new(){""},
-                new(){""},new(){""},new(){""},new(){""}
+                new(){""},new(){""},new(){""},new(){""},new(){""},new(){""},
+                new(){""},new(){""},new(){""},new(){""},new(){""},new(){""},
+                new(){""},new(){""},new(){""},new(){""},new(){""},new(){""}
             };
             HistoryCount = new List<int>(){0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
             Main = mainWindow;
         }
-        public List<int> HistoryCount { get; set; }
-        public List<List<string>> History { get; set; } 
+        public List<int> HistoryCount { get; }
+        public List<List<string>> History { get; } 
         private MainWindow Main { get; }
         public string Quest { get; private set; }
         public string Answer { get; private set; }
@@ -31,7 +31,7 @@ namespace VkConversationBot.EXMPL.Windows {
                 } else BlackWords.Add(Bw.Text.ToLower());
             Main.AddToList(this);
             Create.Visibility = Visibility.Hidden;
-                Hide();
+            Hide();
         }
     }
 }

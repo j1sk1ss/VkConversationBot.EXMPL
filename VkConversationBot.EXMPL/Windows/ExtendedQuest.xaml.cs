@@ -1,12 +1,10 @@
-﻿using System.Linq;
-using System.Windows;
-using LiveCharts;
+﻿using LiveCharts;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
 
 namespace VkConversationBot.EXMPL.Windows
 {
-    public partial class ExtendedQuest : Window
+    public partial class ExtendedQuest
     {
         public ExtendedQuest(QuestionClass questionClass)
         {
@@ -17,7 +15,7 @@ namespace VkConversationBot.EXMPL.Windows
             BlackList.Content = $"Чёрный список: {string.Join(",", QuestionClass.BlackWords)}";
             GenerateChart();
         }
-        private QuestionClass QuestionClass { get; set; }
+        private QuestionClass QuestionClass { get; }
         private void GenerateChart() {
             ExtendedInfo.Series = new SeriesCollection() {
                 new LineSeries() {
