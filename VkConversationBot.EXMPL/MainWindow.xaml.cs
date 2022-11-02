@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using VkConversationBot.EXMPL.SCRIPTS;
 using VkConversationBot.EXMPL.Windows;
@@ -14,6 +15,7 @@ namespace VkConversationBot.EXMPL {
         private readonly Preset _preset;
         public MainWindow() {
             InitializeComponent();
+            UserBList = new List<string>();
             try {
                 if (!File.Exists("Preset.json")) return;
                 _preset = JsonConvert.DeserializeObject<Preset>(File.ReadAllText("Preset.json"));
@@ -41,7 +43,7 @@ namespace VkConversationBot.EXMPL {
         [Obsolete("Obsolete")]
         private void StartBot(object sender, RoutedEventArgs routedEventArgs) {
             try {
-                _bot ??= new Vk(_questItems, Access.Text, Id.Text, _preset);
+                _bot ??= new Vk(_questItems, Access.Text, Id.Text, _preset, this);
                     _bot.Start();
                     Strt.Visibility = Visibility.Hidden;
                     End.Visibility = Visibility.Visible;
@@ -140,16 +142,16 @@ namespace VkConversationBot.EXMPL {
         }
         private void Save(object sender, EventArgs e) {
             try {
+                if (Startup.IsChecked != null && Startup.IsChecked.Value) SetStartup();
                 File.WriteAllText("Preset.json", JsonConvert.SerializeObject(new Preset() {
                     Api = Access.Text,
                     ConId =Id.Text,
                     SoundPerMasg = SoundPerMessage.IsChecked != null && SoundPerMessage.IsChecked.Value,
                     BlackList = BlackList.IsChecked != null && BlackList.IsChecked.Value,
-                    AutoLoad = SoundPerMessage.IsChecked != null && SoundPerMessage.IsChecked.Value,
+                    AutoLoad = Startup.IsChecked != null && Startup.IsChecked.Value,
                     DurationUsage = TimeDurationChecker.IsChecked != null && TimeDurationChecker.IsChecked.Value,
                     Duration = TimeDuration.Text,
                     Background = BackGroundWork.IsChecked != null && BackGroundWork.IsChecked.Value,
-                    
                     //Quests = _questItems
                 }, Formatting.None, new JsonSerializerSettings()
                 { 
@@ -160,6 +162,23 @@ namespace VkConversationBot.EXMPL {
                 MessageBox.Show($"{exception}");
                 throw;
             }
+        }
+        private static void SetStartup() {
+            var key = Registry.CurrentUser.
+                OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            key!.SetValue("Your Application Name", System.Reflection.Assembly.GetExecutingAssembly().Location);         
+
+        }
+        public List<string> UserBList { get; set; }
+        private void UserBlackList(object sender, RoutedEventArgs e) {
+            var blackList = new BlackList(this);
+            blackList.Show();
+        }
+        private void EnableBlackList(object sender, RoutedEventArgs e) {
+            ButtonBlackList.Visibility = Visibility.Visible;
+        }
+        private void DisableBlackList(object sender, RoutedEventArgs e) {
+            ButtonBlackList.Visibility = Visibility.Hidden;
         }
     }
 }

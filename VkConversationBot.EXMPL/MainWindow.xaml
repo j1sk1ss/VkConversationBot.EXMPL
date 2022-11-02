@@ -3,26 +3,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="Bot Manager" Height="500" Width="800"
-        ResizeMode="NoResize" WindowStyle="SingleBorderWindow"
-        Closed="Save">
+        ResizeMode="NoResize" WindowStyle="SingleBorderWindow">
     <Grid Margin="0,20,0,0">
-
         <TextBox x:Name="Access" Height="25" Width="100" Margin="-650,-360,0,0"> Токен </TextBox>
         <TextBox x:Name="Id" Height="25" Width="100" Margin="-650,-440,0,0"> Ссылка </TextBox>
-        <Label Margin="20,100,660,340">Базовые настройки:</Label>
-            <CheckBox x:Name="SoundPerMessage" Margin="25,130,500,0"> Звуковой сигнал при сообщении </CheckBox>
-                <CheckBox x:Name="BlackList" Margin="25,160,500,0"> Использовать черный список </CheckBox>
-        <CheckBox x:Name="Startup" Margin="25,190,500,0"> Добавить в автозагрузку </CheckBox>
-        <Label Margin="300,100,0,340">Пользовательские настройки:</Label>
-        <CheckBox x:Name="TimeDurationChecker" Margin="305,130,210,0" Checked="EnableDuration" Unchecked="DisableDuration"> Промежуток между сообщениями </CheckBox>
-            <TextBox x:Name = "TimeDuration" Margin="530,125,110,290" Visibility="Hidden"> ЧАСЫ </TextBox>
-        <CheckBox x:Name="BackGroundWork" Margin="305,160,210,0"> Работа всё время в фоне </CheckBox>
-            <Button Height="20" Width="100" Margin="670,0,0,0" Click="CreateQuest" > ДОБАВИТЬ СБЩ. </Button>
-            <Button x:Name="Strt" Height="20" Width="100" Margin="440,0,0,0" Click="StartBot" > ЗАПУСК! </Button>
+        <Grid Margin="540,-100,0,0">
+            <Label Margin="20,100,0,340">Базовые настройки:</Label>
+            <CheckBox x:Name="SoundPerMessage" Margin="25,130,0,0"> Звуковой сигнал при сообщении </CheckBox>
+            <CheckBox x:Name="BlackList" Margin="25,160,0,0" Checked="EnableBlackList" Unchecked="DisableBlackList"> Использовать черный список </CheckBox>
+            <Button x:Name="ButtonBlackList" Height="20" Width="100" Margin="-330,-195,0,0" Visibility="Hidden" Click="UserBlackList"> Редактировать </Button>
+            <CheckBox x:Name="Startup" Margin="25,190,0,0"> Добавить в автозагрузку </CheckBox>
+        </Grid>
+        <Grid Margin="260,30,0,0">
+            <Label Margin="300,100,0,260">Пользовательские настройки:</Label>
+            <CheckBox x:Name="TimeDurationChecker" Margin="305,130,0,0" Checked="EnableDuration" Unchecked="DisableDuration"> Промежуток между сообщениями </CheckBox>
+            <TextBox x:Name = "TimeDuration" Margin="-50,-175,0,0" Height="25" Width="100" Visibility="Hidden"> ЧАСЫ </TextBox>
+            <CheckBox x:Name="BackGroundWork" Margin="305,160,0,0"> Работа всё время в фоне </CheckBox>
+        </Grid>
+        <Button x:Name="Strt" Height="40" Width="200" Margin="-550,-20,0,0" Click="StartBot" > ЗАПУСК! </Button>
             <Button x:Name="End" Height="20" Width="100" Margin="440,0,0,0" Click="StopBot" Visibility="Hidden"> ОСТАНОВИТЬ! </Button>
-            <Button x:Name="SaveButton" Height="20" Width="100" Margin="200,0,0,0" Click="Save"> СОХРАНИТЬ! </Button>
+            <Button x:Name="SaveButton" Height="20" Width="100" Margin="650,0,0,0" Click="Save"> СОХРАНИТЬ! </Button>
             <Canvas Background="Black" Height="1" Width="750" Margin="0,30,0,0"></Canvas>
                 <Canvas Background="Black" Height="1" Width="750" Margin="0,435,0,0"></Canvas>
                     <Canvas Background="Black" Height="200" Width="1" Margin="0,235,750,0"></Canvas>
@@ -31,5 +34,7 @@
             <Grid x:Name="Questions" Height="0" VerticalAlignment="Top">
                </Grid> 
         </ScrollViewer>
+        <Button Height="20" Width="100" Margin="-650,410,0,0" Click="CreateQuest" > ДОБАВИТЬ СБЩ. </Button>
+        
     </Grid>
 </Window>

@@ -9,13 +9,12 @@ using VkNet.Enums.Filters;
 using VkNet.Model.Keyboard;
 using System.Windows.Threading;
 using VkConversationBot.EXMPL.Windows;
-using VkNet.Enums.SafetyEnums;
-
 namespace VkConversationBot.EXMPL.SCRIPTS
 {
     public class Vk {
-        public Vk(List<QuestionClass> questionClasses, string token, string idOfConversation, Preset preset) {
+        public Vk(List<QuestionClass> questionClasses, string token, string idOfConversation, Preset preset, MainWindow mainWindow) {
             Preset = preset;
+            MainWindow = mainWindow;
             DataBase = new Dictionary<string, string>();
             BlackWords = new List<List<string>>();
             Quests = new List<QuestionClass>();
@@ -27,6 +26,8 @@ namespace VkConversationBot.EXMPL.SCRIPTS
             Token = token;
                 IdOfConversation = long.Parse(idOfConversation.Split("c")[2]);
         }
+
+        private MainWindow MainWindow { get; set; }
         private static List<QuestionClass> Quests { get; set; } 
         private static Preset Preset { get; set; }
         private Dictionary<string, string> DataBase { get; }
@@ -65,10 +66,14 @@ namespace VkConversationBot.EXMPL.SCRIPTS
                     for (var j = 0; j < BlackWords[i].Count; j++) {
                         if (message.ToLower().Contains(BlackWords[i][j])) continue;
                         if (j != BlackWords[i].Count - 1) continue;
-                        Quests[i].History[DateTime.Now.Hour].Add(VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.FirstName + " " +
-                                                                 VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.LastName);
-                        Quests[i].HistoryCount[DateTime.Now.Hour]++;
-                        SendMessage(DataBase[DataBase.Keys.ToList()[i]], int.Parse(minfo[2].ToString()!), null);
+                        for (var k = 0; k < MainWindow.UserBList.Count; k++) {
+                            if ((string)minfo[2] == MainWindow.UserBList[k]) continue;
+                            if (k != MainWindow.UserBList.Count - 1) continue;
+                            Quests[i].History[DateTime.Now.Hour].Add(VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.FirstName + " " +
+                                                                     VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.LastName);
+                            Quests[i].HistoryCount[DateTime.Now.Hour]++;
+                            SendMessage(DataBase[DataBase.Keys.ToList()[i]], int.Parse(minfo[2].ToString()!), null);
+                        }
                     }
                     break;
                 }
@@ -78,6 +83,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS
                 throw;
             }
         }
+        
         private static void SendMessage(string message, long? userid, MessageKeyboard keyboard) {
             if (Preset.DurationUsage) if (!CheckDuration(userid)) return;
             if (Preset.SoundPerMasg) System.Media.SystemSounds.Asterisk.Play();
@@ -103,7 +109,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS
             });
             foreach (var msg in messages.Messages) {
                 if (msg.ChatId != IdOfConversation) continue;
-                    var message = !string.IsNullOrEmpty(msg.Body) ? msg.Body : "";
+                var message = !string.IsNullOrEmpty(msg.Body) ? msg.Body : "";
                     var keyname = msg.Payload ?? "";
                     var id = msg.UserId;
                     if (id != null) {

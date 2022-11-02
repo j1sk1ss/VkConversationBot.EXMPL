@@ -8,13 +8,13 @@
         mc:Ignorable="d"
         Title="Extended Information" Height="450" Width="800">
     <Grid>
-        <Label x:Name="Number" FontSize="20" Margin="0,0,0,290"> Запрос номер: </Label>
+        <Label x:Name="Number" FontSize="20" Margin="300,0,0,290"> Запрос номер: </Label>
         <Label x:Name="Question" FontSize="20" Margin="0,40,0,290"> Сообщение: </Label>
         <Label x:Name="Answer" FontSize="20" Margin="0,80,0,290"> Ответ: </Label>
         <Label x:Name="BlackList" FontSize="20" Margin="0,120,0,250"> Чёрный список: </Label>
         <Grid>
             <lvc:CartesianChart Height="200"
-                                Margin="0,100,0,0"
+                                Margin="0,200,0,0"
                                 LegendLocation="Bottom"
                                 Hoverable="True"
                                 x:Name="ExtendedInfo"

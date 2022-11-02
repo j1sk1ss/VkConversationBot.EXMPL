@@ -1,0 +1,16 @@
+﻿<Window x:Class="VkConversationBot.EXMPL.Windows.BlackList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        Closed="SendToMain"
+        Title="Users Black List" Height="350" Width="300">
+    <Grid>
+        <Button Height="30" Width="30" Margin="200,-250,0,0" Click="AddToList">+</Button>
+        <TextBox x:Name="Id" Height="30" Width="200" Margin="-50,-250,0,0"></TextBox>
+        <ScrollViewer x:Name="BList" Height="250" Width="200" Margin="-50,40,0,0">
+            <Grid x:Name="Grid" Height="0" VerticalAlignment="Top"></Grid>
+        </ScrollViewer>
+    </Grid>
+</Window>
