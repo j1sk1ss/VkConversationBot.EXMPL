@@ -23,11 +23,12 @@ namespace VkConversationBot.EXMPL {
                     Access.Text = _preset.Api;
                     Id.Text = _preset.ConId;
                     SoundPerMessage.IsChecked = _preset.SoundPerMasg;
-                    BlackList.IsChecked = _preset.BlackList;
+                    BlackList.IsChecked = _preset.BlackListUsage;
                     SoundPerMessage.IsChecked = _preset.AutoLoad;
                     TimeDurationChecker.IsChecked = _preset.DurationUsage;
                     BackGroundWork.IsChecked = _preset.Background;
                     TimeDuration.Text = _preset.Duration;
+                    UserBList = _preset.BlackList;
                     //_questItems = _preset.Quests;
                     UpdateList();
             }
@@ -52,7 +53,8 @@ namespace VkConversationBot.EXMPL {
                 MessageBox.Show($"{e}");
             }
         }
-        private void StopBot(object sender, RoutedEventArgs routedEventArgs) {
+        private void StopBot(object sender, RoutedEventArgs routedEventArgs)
+        {
             _bot.Dispatcher.IsEnabled = false;
             Strt.Visibility = Visibility.Visible;
             End.Visibility = Visibility.Hidden;
@@ -147,11 +149,12 @@ namespace VkConversationBot.EXMPL {
                     Api = Access.Text,
                     ConId =Id.Text,
                     SoundPerMasg = SoundPerMessage.IsChecked != null && SoundPerMessage.IsChecked.Value,
-                    BlackList = BlackList.IsChecked != null && BlackList.IsChecked.Value,
+                    BlackListUsage = BlackList.IsChecked != null && BlackList.IsChecked.Value,
                     AutoLoad = Startup.IsChecked != null && Startup.IsChecked.Value,
                     DurationUsage = TimeDurationChecker.IsChecked != null && TimeDurationChecker.IsChecked.Value,
                     Duration = TimeDuration.Text,
                     Background = BackGroundWork.IsChecked != null && BackGroundWork.IsChecked.Value,
+                    BlackList = UserBList,
                     //Quests = _questItems
                 }, Formatting.None, new JsonSerializerSettings()
                 { 
@@ -166,7 +169,7 @@ namespace VkConversationBot.EXMPL {
         private static void SetStartup() {
             var key = Registry.CurrentUser.
                 OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            key!.SetValue("Your Application Name", System.Reflection.Assembly.GetExecutingAssembly().Location);         
+            key!.SetValue("Conversation bot", System.Reflection.Assembly.GetExecutingAssembly().Location);         
 
         }
         public List<string> UserBList { get; set; }

@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="Bot Manager" Height="500" Width="800"
         ResizeMode="NoResize" WindowStyle="SingleBorderWindow">
@@ -14,13 +13,13 @@
             <Label Margin="20,100,0,340">Базовые настройки:</Label>
             <CheckBox x:Name="SoundPerMessage" Margin="25,130,0,0"> Звуковой сигнал при сообщении </CheckBox>
             <CheckBox x:Name="BlackList" Margin="25,160,0,0" Checked="EnableBlackList" Unchecked="DisableBlackList"> Использовать черный список </CheckBox>
-            <Button x:Name="ButtonBlackList" Height="20" Width="100" Margin="-330,-195,0,0" Visibility="Hidden" Click="UserBlackList"> Редактировать </Button>
+            <Button x:Name="ButtonBlackList" Height="20" Width="100" Margin="-330,-205,0,0" Visibility="Hidden" Click="UserBlackList"> Редактировать </Button>
             <CheckBox x:Name="Startup" Margin="25,190,0,0"> Добавить в автозагрузку </CheckBox>
         </Grid>
         <Grid Margin="260,30,0,0">
             <Label Margin="300,100,0,260">Пользовательские настройки:</Label>
             <CheckBox x:Name="TimeDurationChecker" Margin="305,130,0,0" Checked="EnableDuration" Unchecked="DisableDuration"> Промежуток между сообщениями </CheckBox>
-            <TextBox x:Name = "TimeDuration" Margin="-50,-175,0,0" Height="25" Width="100" Visibility="Hidden"> ЧАСЫ </TextBox>
+            <TextBox x:Name = "TimeDuration" Margin="-50,-135,0,0" Height="25" Width="100" Visibility="Hidden"> ЧАСЫ </TextBox>
             <CheckBox x:Name="BackGroundWork" Margin="305,160,0,0"> Работа всё время в фоне </CheckBox>
         </Grid>
         <Button x:Name="Strt" Height="40" Width="200" Margin="-550,-20,0,0" Click="StartBot" > ЗАПУСК! </Button>

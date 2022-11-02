@@ -3,12 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:VkConversationBot.EXMPL.Windows"
         mc:Ignorable="d"
         WindowStyle="SingleBorderWindow"
-        Title="ExtendedUsers" Height="300" Width="200">
-    <Grid Height="300" Width="200">
-        <ScrollViewer Height="300" Width="200">
+        ResizeMode="NoResize"
+        Title="Users List" Height="300" Width="200">
+    <Grid>
+        <ScrollViewer>
             <Grid x:Name="UsersGrid" VerticalAlignment="Top">
             </Grid>
         </ScrollViewer>
