@@ -89,6 +89,7 @@ namespace VkConversationBot.EXMPL {
         }
         private void UpdateList() {
             Questions.Height = _questItems.Count * 50; 
+            Questions.Children.Clear();
             for (var i = 0; i < _questItems.Count; i++) { 
                 var item = new Grid() {
                     Height = 40, Width = 750,

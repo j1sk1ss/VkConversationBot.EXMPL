@@ -18,6 +18,7 @@
                                 LegendLocation="Bottom"
                                 Hoverable="True"
                                 x:Name="ExtendedInfo"
+                                DataClick="ShowUsers"
                                 >
             </lvc:CartesianChart>
         </Grid>

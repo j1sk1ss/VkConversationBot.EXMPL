@@ -28,7 +28,7 @@
                     <Canvas Background="Black" Height="200" Width="1" Margin="0,235,750,0"></Canvas>
                         <Canvas Background="Black" Height="200" Width="1" Margin="0,235,-750,0"></Canvas>
         <ScrollViewer BorderBrush="Black" x:Name="Scroll" Margin="0,230,0,0" Height="200" Width="750">
-            <Grid x:Name="Questions" Height="0">
+            <Grid x:Name="Questions" Height="0" VerticalAlignment="Top">
                </Grid> 
         </ScrollViewer>
     </Grid>

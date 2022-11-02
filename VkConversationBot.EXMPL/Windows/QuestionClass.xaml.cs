@@ -8,10 +8,17 @@ namespace VkConversationBot.EXMPL.Windows {
             Quest = "";
             Answer = "";
             BlackWords = new List<string>();
-            History = new List<int>() {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+            History = new List<List<string>>() {
+                new(){""},new(){""},new(){""},new(){""},new(){""},new(){""},
+                new(){""},new(){""},new(){""},new(){""},new(){""},new(){""},new(){""},
+                new(){""},new(){""},new(){""},new(){""},new(){""},new(){""},new(){""},
+                new(){""},new(){""},new(){""},new(){""}
+            };
+            HistoryCount = new List<int>(){0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
             Main = mainWindow;
         }
-        public List<int> History { get; set; } 
+        public List<int> HistoryCount { get; set; }
+        public List<List<string>> History { get; set; } 
         private MainWindow Main { get; }
         public string Quest { get; private set; }
         public string Answer { get; private set; }

@@ -22,9 +22,13 @@ namespace VkConversationBot.EXMPL.Windows
             ExtendedInfo.Series = new SeriesCollection() {
                 new LineSeries() {
                     Title = QuestionClass.Quest,
-                    Values = QuestionClass.History.AsChartValues()
+                    Values = QuestionClass.HistoryCount.AsChartValues()
                 }
             };
+        }
+        private void ShowUsers(object sender, ChartPoint chartpoint) {
+            var extended = new ExtendedUsers(QuestionClass.History[chartpoint.Key]);
+            extended.Show();
         }
     }
 }

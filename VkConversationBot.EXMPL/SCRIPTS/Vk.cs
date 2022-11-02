@@ -9,6 +9,7 @@ using VkNet.Enums.Filters;
 using VkNet.Model.Keyboard;
 using System.Windows.Threading;
 using VkConversationBot.EXMPL.Windows;
+using VkNet.Enums.SafetyEnums;
 
 namespace VkConversationBot.EXMPL.SCRIPTS
 {
@@ -26,7 +27,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS
             Token = token;
                 IdOfConversation = long.Parse(idOfConversation.Split("c")[2]);
         }
-        private List<QuestionClass> Quests { get; set; } 
+        private static List<QuestionClass> Quests { get; set; } 
         private static Preset Preset { get; set; }
         private Dictionary<string, string> DataBase { get; }
         private string Token { get; }
@@ -64,7 +65,9 @@ namespace VkConversationBot.EXMPL.SCRIPTS
                     for (var j = 0; j < BlackWords[i].Count; j++) {
                         if (message.ToLower().Contains(BlackWords[i][j])) continue;
                         if (j != BlackWords[i].Count - 1) continue;
-                        Quests[i].History[DateTime.Now.Hour]++;
+                        Quests[i].History[DateTime.Now.Hour].Add(VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.FirstName + " " +
+                                                                 VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.LastName);
+                        Quests[i].HistoryCount[DateTime.Now.Hour]++;
                         SendMessage(DataBase[DataBase.Keys.ToList()[i]], int.Parse(minfo[2].ToString()!), null);
                     }
                     break;
