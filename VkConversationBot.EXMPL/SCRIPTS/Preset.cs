@@ -11,6 +11,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
         public bool DurationUsage { get; init; }
         public string Duration { get; init; }
         public bool Background { get; init; }
+        public bool AutoSave { get; init; }
         public List<string> BlackList { get; init; }
         public List<QuestObject> Quests { get; set; }
     }

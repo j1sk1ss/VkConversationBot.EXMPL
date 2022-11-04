@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
+        Closed="Save"
         Title="Bot Manager" Height="500" Width="800"
         ResizeMode="NoResize" WindowStyle="SingleBorderWindow">
     <Grid Margin="0,20,0,0">
@@ -23,9 +24,9 @@
             <CheckBox x:Name="BackGroundWork" Margin="305,160,0,0"> Работа всё время в фоне </CheckBox>
         </Grid>
         <Button x:Name="Strt" Height="40" Width="200" Margin="-550,-20,0,0" Click="StartBot" > ЗАПУСК! </Button>
-            <Button x:Name="End" Height="20" Width="100" Margin="440,0,0,0" Click="StopBot" Visibility="Hidden"> ОСТАНОВИТЬ! </Button>
-            <Button x:Name="SaveButton" Height="20" Width="100" Margin="650,0,0,0" Click="Save"> СОХРАНИТЬ! </Button>
-            <Canvas Background="Black" Height="1" Width="750" Margin="0,30,0,0"></Canvas>
+            <Button x:Name="End" Height="40" Width="200" Margin="-550,-20,0,0" Click="StopBot" Visibility="Hidden"> ОСТАНОВИТЬ! </Button>
+        <CheckBox x:Name="AutoSave" Height="25" Width="200" Margin="545,0,0,0"> Автосохранение настроек </CheckBox>
+        <Canvas Background="Black" Height="1" Width="750" Margin="0,30,0,0"></Canvas>
                 <Canvas Background="Black" Height="1" Width="750" Margin="0,435,0,0"></Canvas>
                     <Canvas Background="Black" Height="200" Width="1" Margin="0,235,750,0"></Canvas>
                         <Canvas Background="Black" Height="200" Width="1" Margin="0,235,-750,0"></Canvas>
@@ -33,7 +34,7 @@
             <Grid x:Name="Questions" Height="0" VerticalAlignment="Top">
                </Grid> 
         </ScrollViewer>
-        <Button Height="20" Width="100" Margin="-650,410,0,0" Click="CreateQuest" > ДОБАВИТЬ СБЩ. </Button>
+        <Button Height="20" Width="20" Margin="-720,410,0,0" Click="CreateQuest" > + </Button>
         
     </Grid>
 </Window>

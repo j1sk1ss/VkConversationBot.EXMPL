@@ -26,6 +26,7 @@ namespace VkConversationBot.EXMPL {
                     BlackList.IsChecked = _preset.BlackListUsage;
                     SoundPerMessage.IsChecked = _preset.AutoLoad;
                     TimeDurationChecker.IsChecked = _preset.DurationUsage;
+                    AutoSave.IsChecked = _preset.AutoSave;
                     BackGroundWork.IsChecked = _preset.Background;
                     TimeDuration.Text = _preset.Duration;
                     UserBList = _preset.BlackList;
@@ -122,6 +123,7 @@ namespace VkConversationBot.EXMPL {
         private void Save(object sender, EventArgs e) {
             try {
                 if (Startup.IsChecked != null && Startup.IsChecked.Value) SetStartup();
+                if (AutoSave.IsChecked != null && !AutoSave.IsChecked.Value) return;
                 File.WriteAllText("Preset.json", JsonConvert.SerializeObject(new Preset() {
                     Api = Access.Text,
                     ConId =Id.Text,
@@ -131,6 +133,7 @@ namespace VkConversationBot.EXMPL {
                         DurationUsage = TimeDurationChecker.IsChecked != null && TimeDurationChecker.IsChecked.Value,
                     Duration = TimeDuration.Text,
                         Background = BackGroundWork.IsChecked != null && BackGroundWork.IsChecked.Value,
+                        AutoSave = AutoSave.IsChecked != null && AutoSave.IsChecked.Value,
                     BlackList = UserBList,
                     Quests = _questItems
                 }, Formatting.None, new JsonSerializerSettings() { 

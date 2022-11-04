@@ -38,7 +38,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
             Interval = new TimeSpan(1000)
         };
         [Obsolete("Obsolete")]
-        public void Start() {
+        public void Start() { // Vk.api tries authorize by given token
             if (!VkApi.IsAuthorized) {
                 try {
                     VkApi.Authorize(new ApiAuthParams {
@@ -101,8 +101,8 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
         private object[] GetMessage() {
             long? userid = 0;
             var messages = VkApi.Messages.GetDialogs(new MessagesDialogsGetParams { 
-                Count = 1, // ~10
-                Unread = false // true
+                Count = 10, // ~1
+                Unread = true // false
             });
             foreach (var msg in messages.Messages) {
                 if (msg.ChatId != IdOfConversation) continue;
@@ -113,7 +113,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
                         userid = id.Value;
                     }
                     var keys = new object[]{ message, keyname, userid };
-                        //VkApi.Messages.MarkAsRead((IdOfConversation + 2000000000).ToString());
+                        VkApi.Messages.MarkAsRead((IdOfConversation + 2000000000).ToString());
                         return keys;
             }
             return null;
