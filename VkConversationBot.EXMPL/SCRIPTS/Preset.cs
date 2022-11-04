@@ -3,10 +3,6 @@ using VkConversationBot.EXMPL.Windows;
 
 namespace VkConversationBot.EXMPL.SCRIPTS {
     public class Preset {
-        public Preset()
-        {
-            Quests = new List<QuestionClass>();
-        }
         public string Api { get; init; }
         public string ConId { get; init; }
         public bool SoundPerMasg { get; init; }
@@ -16,6 +12,6 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
         public string Duration { get; init; }
         public bool Background { get; init; }
         public List<string> BlackList { get; init; }
-        public List<QuestionClass> Quests { get; set; }
+        public List<QuestObject> Quests { get; set; }
     }
 }

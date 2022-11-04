@@ -1,31 +1,28 @@
 ﻿using LiveCharts;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
-
-namespace VkConversationBot.EXMPL.Windows
-{
-    public partial class ExtendedQuest
-    {
-        public ExtendedQuest(QuestionClass questionClass)
-        {
-            QuestionClass = questionClass;
+using VkConversationBot.EXMPL.SCRIPTS;
+namespace VkConversationBot.EXMPL.Windows {
+    public partial class ExtendedQuest {
+        public ExtendedQuest(QuestObject questionObj) {
+            QuestionObj = questionObj;
             InitializeComponent();
-            Question.Content = $"Сообщение: {QuestionClass.Quest}";
-            Answer.Content = $"Ответ: {QuestionClass.Answer}";
-            BlackList.Content = $"Чёрный список: {string.Join(",", QuestionClass.BlackWords)}";
+            Question.Content = $"Сообщение: {QuestionObj.Quest}";
+            Answer.Content = $"Ответ: {QuestionObj.Answer}";
+            BlackList.Content = $"Чёрный список: {string.Join(",", QuestionObj.BlackWords)}";
             GenerateChart();
         }
-        private QuestionClass QuestionClass { get; }
+        private QuestObject QuestionObj { get; }
         private void GenerateChart() {
             ExtendedInfo.Series = new SeriesCollection() {
                 new LineSeries() {
-                    Title = QuestionClass.Quest,
-                    Values = QuestionClass.HistoryCount.AsChartValues()
+                    Title = QuestionObj.Quest,
+                    Values = QuestionObj.HistoryCount.AsChartValues()
                 }
             };
         }
         private void ShowUsers(object sender, ChartPoint chartpoint) {
-            var extended = new ExtendedUsers(QuestionClass.History[chartpoint.Key]);
+            var extended = new ExtendedUsers(QuestionObj.History[chartpoint.Key]);
             extended.Show();
         }
     }

@@ -11,7 +11,7 @@ using VkConversationBot.EXMPL.Windows;
 
 namespace VkConversationBot.EXMPL {
     public partial class MainWindow {
-        private readonly List<QuestionClass> _questItems = new();
+        private readonly List<QuestObject> _questItems = new();
         private readonly Preset _preset;
         public MainWindow() {
             InitializeComponent();
@@ -29,7 +29,7 @@ namespace VkConversationBot.EXMPL {
                     BackGroundWork.IsChecked = _preset.Background;
                     TimeDuration.Text = _preset.Duration;
                     UserBList = _preset.BlackList;
-                    //_questItems = _preset.Quests;
+                    _questItems = _preset.Quests;
                     UpdateList();
             }
             catch (Exception e) {
@@ -38,7 +38,7 @@ namespace VkConversationBot.EXMPL {
             }
         }
         private void CreateQuest(object sender, RoutedEventArgs e) {
-            new QuestionClass(this).Show();
+            new QuestionSetter(this).Show();
         }
         private Vk _bot;
         [Obsolete("Obsolete")]
@@ -58,7 +58,7 @@ namespace VkConversationBot.EXMPL {
             Strt.Visibility = Visibility.Visible;
             End.Visibility = Visibility.Hidden;
         }
-        public void AddToList(QuestionClass qItem) {
+        public void AddToList(QuestObject qItem) {
             _questItems.Add(qItem);
             UpdateList();
         }
@@ -132,7 +132,7 @@ namespace VkConversationBot.EXMPL {
                     Duration = TimeDuration.Text,
                         Background = BackGroundWork.IsChecked != null && BackGroundWork.IsChecked.Value,
                     BlackList = UserBList,
-                    //Quests = _questItems
+                    Quests = _questItems
                 }, Formatting.None, new JsonSerializerSettings() { 
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 }));
