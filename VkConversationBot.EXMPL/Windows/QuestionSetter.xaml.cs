@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using VkConversationBot.EXMPL.SCRIPTS;
-
 namespace VkConversationBot.EXMPL.Windows {
     public partial class QuestionSetter {
         public QuestionSetter(MainWindow mainWindow) {

@@ -8,7 +8,6 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using VkConversationBot.EXMPL.SCRIPTS;
 using VkConversationBot.EXMPL.Windows;
-
 namespace VkConversationBot.EXMPL {
     public partial class MainWindow {
         private readonly List<QuestObject> _questItems = new();
@@ -141,7 +140,7 @@ namespace VkConversationBot.EXMPL {
                 }));
             }
             catch (Exception exception) {
-                MessageBox.Show($"{exception}");
+                MessageBox.Show($"{exception}", "Saving error!", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw;
             }
         }

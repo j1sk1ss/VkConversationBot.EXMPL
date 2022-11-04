@@ -8,7 +8,6 @@ using VkNet.Model.RequestParams;
 using VkNet.Enums.Filters;
 using VkNet.Model.Keyboard;
 using System.Windows.Threading;
-using VkConversationBot.EXMPL.Windows;
 namespace VkConversationBot.EXMPL.SCRIPTS {
     public class Vk {
         public Vk(List<QuestObject> questionClasses, string token, string idOfConversation, Preset preset, MainWindow mainWindow) {

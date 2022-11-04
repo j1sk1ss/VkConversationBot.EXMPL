@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows;
 using VkConversationBot.EXMPL.INTERFACES;
 namespace VkConversationBot.EXMPL.SCRIPTS {
     public class QuestObject : IQuest {
