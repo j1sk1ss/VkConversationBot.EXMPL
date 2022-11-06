@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 namespace VkConversationBot.EXMPL.Windows {
-    public partial class BlackList : Window {
+    public partial class BlackList {
         public BlackList(MainWindow mainWindow) {
             MainWindow = mainWindow;
             List       = MainWindow.UserBList;
             InitializeComponent();
             UpdateList();
         }
-        private MainWindow MainWindow { get; set; }
-        private List<string> List { get; set; }
-
+        private MainWindow MainWindow { get; }
+        private List<string> List { get; }
         private void UpdateList() {
             Grid.Children.Clear();
             Grid.Height = List.Count * 32;

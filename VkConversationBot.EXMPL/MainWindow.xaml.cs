@@ -24,7 +24,7 @@ namespace VkConversationBot.EXMPL {
                     Id.Text                       = _preset.ConId;
                     SoundPerMessage.IsChecked     = _preset.SoundPerMasg;
                     BlackList.IsChecked           = _preset.BlackListUsage;
-                    SoundPerMessage.IsChecked     = _preset.AutoLoad;
+                    Startup.IsChecked             = _preset.AutoLoad;
                     TimeDurationChecker.IsChecked = _preset.DurationUsage;
                     AutoSave.IsChecked            = _preset.AutoSave;
                     BackGroundWork.IsChecked      = _preset.Background;
@@ -34,8 +34,8 @@ namespace VkConversationBot.EXMPL {
                     UpdateList();
             }
             catch (Exception e) {
-                MessageBox.Show($"{e}");
-                throw;
+                MessageBox.Show($"{e}", "Error with loading JSON!", MessageBoxButton.OK, 
+                    MessageBoxImage.Asterisk);
             }
         }
         private void CreateQuest(object sender, RoutedEventArgs e) {
@@ -142,8 +142,7 @@ namespace VkConversationBot.EXMPL {
                 }));
             }
             catch (Exception exception) {
-                MessageBox.Show($"{exception}", "Saving error!", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw;
+                MessageBox.Show($"{exception}", "Saving error!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
         }
         private static void SetStartup() {

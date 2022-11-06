@@ -87,8 +87,8 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
             if (Preset.SoundPerMasg) System.Media.SystemSounds.Asterisk.Play(); // Sound 
             try {
                 VkApi.Messages.Send(new MessagesSendParams { // try to send message to user
-                    Message = message,
-                    PeerId = userid,
+                    Message  = message,
+                    PeerId   = userid,
                     RandomId = new Random().Next(),
                     Keyboard = keyboard
                 });
@@ -101,7 +101,7 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
         private static bool CheckDuration(long? userid) { // return true if last message was sent less then typed count of hours ago
             return VkApi.Messages.GetHistory(new MessagesGetHistoryParams() {
                 UserId = userid,
-                Count = 1
+                Count  = 1
             }).Messages.Any(msg => DateTime.Now.Date - msg.Date
                                    < new TimeSpan(int.Parse(Preset.Duration), 0, 0));
         }
