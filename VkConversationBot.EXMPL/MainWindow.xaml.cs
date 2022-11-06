@@ -48,7 +48,7 @@ namespace VkConversationBot.EXMPL {
                 _bot ??= new Vk(_questItems, Access.Text, Id.Text, _preset, this);
                     _bot.Start();
                     Strt.Visibility = Visibility.Hidden;
-                    End.Visibility = Visibility.Visible;
+                    End.Visibility  = Visibility.Visible;
             }
             catch (Exception e) {
                 MessageBox.Show($"{e}");
@@ -57,7 +57,7 @@ namespace VkConversationBot.EXMPL {
         private void StopBot(object sender, RoutedEventArgs routedEventArgs) {
             _bot.Dispatcher.IsEnabled = false;
             Strt.Visibility = Visibility.Visible;
-            End.Visibility = Visibility.Hidden;
+            End.Visibility  = Visibility.Hidden;
         }
         public void AddToList(QuestObject qItem) {
             _questItems.Add(qItem);
@@ -80,45 +80,46 @@ namespace VkConversationBot.EXMPL {
                 var item = new Grid() {
                     Height = 40, Width = 750,
                     VerticalAlignment = VerticalAlignment.Top,
-                    Margin = new Thickness(0,5 * (10 * i),0,0),
+                    Margin   = new Thickness(0,5 * (10 * i),0,0),
+                    Children = { 
+                        new Canvas() {
+                        Height = 1, Width = 710, Background = Brushes.Black,
+                        Margin = new Thickness(-30,-40,0,0)
+                        },
+                        new Canvas() {
+                            Height = 1, Width = 710, Background = Brushes.Black,
+                            Margin = new Thickness(-30,40,0,0)
+                        },
+                        new Label() {
+                            Margin   = new Thickness(0,0,450,0),
+                            FontSize = 10, Content = $" СООБЩЕНИЕ: \n {_questItems[i].Quest}"
+                        },
+                        new Label() {
+                            Margin   = new Thickness(350,0,0,0),
+                            FontSize = 10, Content = $" ОТВЕТ: \n {_questItems[i].Answer}"
+                        }
+                    }
                 };
-                item.Children.Add(new Canvas() {
-                    Height = 1, Width = 710, Background = Brushes.Black,
-                    Margin = new Thickness(-30,-40,0,0)
-                });
-                item.Children.Add(new Canvas() {
-                    Height = 1, Width = 710, Background = Brushes.Black,
-                    Margin = new Thickness(-30,40,0,0)
-                });
-                item.Children.Add(new Label() {
-                    Margin = new Thickness(0,0,450,0),
-                    FontSize = 10, Content = $" СООБЩЕНИЕ: \n{_questItems[i].Quest}"
-                });
-                item.Children.Add(new Label() {
-                    Margin = new Thickness(350,0,0,0),
-                    FontSize = 10, Content = $" ОТВЕТ: \n{_questItems[i].Answer}"
-                });
                 var x = new Button() {
-                    Name = $"b{i}", Content = "УДАЛИТЬ",
+                    Name   = $"b{i}", Content = "УДАЛИТЬ",
                     Margin = new Thickness(600, -20, 0, 0),
                     Height = 15, Width = 80, FontSize = 10
-                }; x.Click += RemoveFromList;
-                var y = new Button() {
-                    Name = $"v{i}", Content = "ПОДРОБНЕЕ",
-                    Margin = new Thickness(600, 20, 0, 0),
-                    Height = 15, Width = 80, FontSize = 10
-                }; y.Click += ShowQuest;
-                     item.Children.Add(x);
-                        item.Children.Add(y);
-                 Questions.Children.Add(item);
+                }; 
+                x.Click += RemoveFromList;
+                    var y = new Button() {
+                        Name   = $"v{i}", Content = "ПОДРОБНЕЕ",
+                        Margin = new Thickness(600, 20, 0, 0),
+                        Height = 15, Width = 80, FontSize = 10
+                    }; 
+                    y.Click += ShowQuest;
+                item.Children.Add(x);
+                item.Children.Add(y);
+                Questions.Children.Add(item);
             }
         }
         private void EnableDuration(object sender, RoutedEventArgs e) {
-            TimeDuration.Visibility = Visibility.Visible;
-        }
-        private void DisableDuration(object sender, RoutedEventArgs e) {
-            TimeDuration.Text = "ЧАСЫ";
-            TimeDuration.Visibility = Visibility.Hidden;
+            TimeDuration.Visibility = TimeDuration.Visibility == Visibility.Visible 
+                ? Visibility.Hidden : Visibility.Visible;
         }
         private void Save(object sender, EventArgs e) {
             try {
@@ -156,10 +157,8 @@ namespace VkConversationBot.EXMPL {
             blackList.Show();
         }
         private void EnableBlackList(object sender, RoutedEventArgs e) {
-            ButtonBlackList.Visibility = Visibility.Visible;
-        }
-        private void DisableBlackList(object sender, RoutedEventArgs e) {
-            ButtonBlackList.Visibility = Visibility.Hidden;
+            ButtonBlackList.Visibility = ButtonBlackList.Visibility == Visibility.Visible
+                ? Visibility.Hidden : Visibility.Visible;
         }
     }
 }

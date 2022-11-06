@@ -14,13 +14,13 @@
         <Grid Margin="540,-100,0,0">
             <Label Margin="20,100,0,340">Базовые настройки:</Label>
             <CheckBox x:Name="SoundPerMessage" Margin="25,130,0,0"> Звуковой сигнал при сообщении </CheckBox>
-            <CheckBox x:Name="BlackList" Margin="25,160,0,0" Checked="EnableBlackList" Unchecked="DisableBlackList"> Использовать черный список </CheckBox>
+            <CheckBox x:Name="BlackList" Margin="25,160,0,0" Checked="EnableBlackList" Unchecked="EnableBlackList"> Использовать черный список </CheckBox>
             <Button x:Name="ButtonBlackList" Height="20" Width="100" Margin="-330,-205,0,0" Visibility="Hidden" Click="UserBlackList"> Редактировать </Button>
             <CheckBox x:Name="Startup" Margin="25,190,0,0"> Добавить в автозагрузку </CheckBox>
         </Grid>
         <Grid Margin="260,30,0,0">
             <Label Margin="300,100,0,260">Пользовательские настройки:</Label>
-            <CheckBox x:Name="TimeDurationChecker" Margin="305,130,0,0" Checked="EnableDuration" Unchecked="DisableDuration"> Промежуток между сообщениями </CheckBox>
+            <CheckBox x:Name="TimeDurationChecker" Margin="305,130,0,0" Checked="EnableDuration" Unchecked="EnableDuration"> Промежуток между сообщениями </CheckBox>
             <TextBox x:Name = "TimeDuration" Margin="-50,-135,0,0" Height="25" Width="100" Visibility="Hidden"> ЧАСЫ </TextBox>
             <CheckBox x:Name="BackGroundWork" Margin="305,160,0,0"> Работа всё время в фоне </CheckBox>
         </Grid>
@@ -31,10 +31,10 @@
                 <Canvas Background="Black" Height="1" Width="750" Margin="0,435,0,0"></Canvas>
                     <Canvas Background="Black" Height="200" Width="1" Margin="0,235,750,0"></Canvas>
                         <Canvas Background="Black" Height="200" Width="1" Margin="0,235,-750,0"></Canvas>
-        <ScrollViewer BorderBrush="Black" x:Name="Scroll" Margin="0,230,0,0" Height="200" Width="750">
-            <Grid x:Name="Questions" Height="0" VerticalAlignment="Top">
-               </Grid> 
-        </ScrollViewer>
-        <Button Height="20" Width="20" Margin="-720,410,0,0" Click="CreateQuest" > + </Button>
+            <ScrollViewer BorderBrush="Black" x:Name="Scroll" Margin="0,230,0,0" Height="200" Width="750">
+                <Grid x:Name="Questions" Height="0" VerticalAlignment="Top">
+                   </Grid> 
+            </ScrollViewer>
+        <Button Height="20" Width="20" Margin="-720,405,0,0" Click="CreateQuest" > + </Button>
     </Grid>
 </Window>

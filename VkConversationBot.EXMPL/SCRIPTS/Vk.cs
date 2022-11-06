@@ -18,11 +18,13 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
             Token      = token;
             DataBase   = new Dictionary<string, string>();
             BlackWords = new List<List<string>>();
-                foreach (var quest in Quests) {
-                    DataBase!.Add(quest.Quest, quest.Answer);
-                    BlackWords!.Add(quest.BlackWords);
-                }
-                IdOfConversation = long.Parse(idOfConversation.Split("c")[2]);
+            
+            foreach (var quest in Quests) {
+                DataBase!.Add(quest.Quest, quest.Answer);
+                BlackWords!.Add(quest.BlackWords);
+            }
+            
+            IdOfConversation = long.Parse(idOfConversation.Split("c")[2]);
         }
         private MainWindow MainWindow { get; }
         private static List<QuestObject> Quests { get; set; } 
@@ -31,14 +33,14 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
         private string Token { get; }
         private long IdOfConversation { get; }
         private List<List<string>> BlackWords { get; }
-        
+
         private static readonly VkApi VkApi = new();
         
         public readonly DispatcherTimer Dispatcher = new () {
             Interval = new TimeSpan(1000)
         };
         [Obsolete("Obsolete")]
-        public void Start() { // Vk.api tries authorize by given token
+        public void Start() {                                                                                           // Vk.api tries authorize by given token
             if (!VkApi.IsAuthorized) {
                 try {
                     VkApi.Authorize(new ApiAuthParams {
@@ -61,12 +63,16 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
                 var message = minfo[0].ToString();                                                                      // gets text of message
                 for (var i = 0; i < DataBase.Count; i++) {                                                              // check data base of answers
                     if (!message!.ToLower().Contains(DataBase.Keys.ToList()[i])) continue;                              // find answer
-                    for (var j = 0; j < BlackWords[i].Count; j++) if (message.ToLower().Contains(BlackWords[i][j])) return; // break if message includes words from Black List
+                    
+                    if (BlackWords[i].Any(s => message.ToLower().Contains(s))) return;                             // break if message includes words from Black List
+
                     if (MainWindow.BlackList.IsChecked != null && MainWindow.BlackList.IsChecked.Value && 
                         MainWindow.UserBList.Any(id => minfo[2].ToString() == id)) return;                         // break if message was sent by user from Black List 
-                    Quests[i].History[DateTime.Now.Hour].Add(VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.FirstName
-                                                                        + " " + VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.LastName); // Gets user name and surname to History 
+                    
+                    var user = VkApi.Users.Get(new[] { long.Parse(minfo[2].ToString()!) }).FirstOrDefault();
+                    Quests[i].History[DateTime.Now.Hour].Add($"{user!.FirstName} {user!.LastName}");                // Gets user name and surname to History 
                     Quests[i].HistoryCount[DateTime.Now.Hour]++;                                                        // Increase count of messages in this hour 
+                    
                     switch (Quests[i].SendTypeEnum) {                                                                   // send message by chosen type
                         case QuestObject.SendType.Owner:
                             SendMessage($"https://vk.com/id{minfo[2]} нуждается в {DataBase.Keys.ToList()[i]}", int.Parse(MainWindow.Vk.Text), null); 
@@ -83,22 +89,23 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
                 }
         }
         private void SendMessage(string message, long? userid, MessageKeyboard keyboard) {
-            if (Preset.DurationUsage) if (!CheckDuration(userid)) return; // Don`t send message if last was sent less then typed count of hours ago
-            if (Preset.SoundPerMasg) System.Media.SystemSounds.Asterisk.Play(); // Sound 
+            if (Preset.DurationUsage) if (!CheckDuration(userid)) return;                                               // Don`t send message if last was sent less then typed count of hours ago
+            if (Preset.SoundPerMasg) System.Media.SystemSounds.Asterisk.Play();                                         // Sound per message
+            
             try {
-                VkApi.Messages.Send(new MessagesSendParams { // try to send message to user
+                VkApi.Messages.Send(new MessagesSendParams {                                                            // try to send message to user
                     Message  = message,
                     PeerId   = userid,
                     RandomId = new Random().Next(),
                     Keyboard = keyboard
                 });
             }
-            catch (CannotSendDuePrivacyException) { // if chat is closed, send message to owner with all information
+            catch (CannotSendDuePrivacyException) {                                                                     // if chat is closed, send message to owner with all information
                 SendMessage($"https://vk.com/id{userid} нуждается в {message}" +
                             $"\n(Личные сообщения закрыты)", int.Parse(MainWindow.Vk.Text), null); 
             }
         }
-        private static bool CheckDuration(long? userid) { // return true if last message was sent less then typed count of hours ago
+        private static bool CheckDuration(long? userid) {                                                               // return true if last message was sent less then typed count of hours ago
             return VkApi.Messages.GetHistory(new MessagesGetHistoryParams() {
                 UserId = userid,
                 Count  = 1
@@ -115,8 +122,8 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
             foreach (var msg in messages.Messages) {
                 if (msg.ChatId != IdOfConversation) continue;
                 var message = !string.IsNullOrEmpty(msg.Body) ? msg.Body : "";
-                    var keyname = msg.Payload ?? "";
-                    var id = msg.UserId;
+                var keyname = msg.Payload ?? "";
+                var id      = msg.UserId;
                     if (id != null) {
                         userid = id.Value;
                     }

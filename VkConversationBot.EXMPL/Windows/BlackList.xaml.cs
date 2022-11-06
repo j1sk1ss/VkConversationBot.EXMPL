@@ -14,7 +14,9 @@ namespace VkConversationBot.EXMPL.Windows {
         private List<string> List { get; }
         private void UpdateList() {
             Grid.Children.Clear();
-            Grid.Height = List.Count * 32;
+
+            const int heightModificator = 32;
+            Grid.Height = List.Count * heightModificator;
             for (var i = 0; i < List.Count; i++)
                 Grid.Children.Add(new Label() {
                     Margin = new Thickness(0,10 + i * 20,0,0),
