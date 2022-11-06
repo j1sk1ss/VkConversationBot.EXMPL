@@ -7,10 +7,10 @@ namespace VkConversationBot.EXMPL.Windows {
         public ExtendedQuest(QuestObject questionObj) {
             QuestionObj = questionObj;
             InitializeComponent();
-            Question.Content = $"Сообщение: {QuestionObj.Quest}";
-            Answer.Content = $"Ответ: {QuestionObj.Answer}";
+            Question.Content  = $"Сообщение: {QuestionObj.Quest}";
+            Answer.Content    = $"Ответ: {QuestionObj.Answer}";
             BlackList.Content = $"Чёрный список: {string.Join(",", QuestionObj.BlackWords)}";
-            SendType.Content = $"Тип ответа: {QuestionObj.SendTypeEnum}";
+            SendType.Content  = $"Тип ответа: {QuestionObj.SendTypeEnum}";
             GenerateChart();
         }
         private QuestObject QuestionObj { get; }

@@ -4,8 +4,8 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
     public class QuestObject : IQuest {
         public QuestObject() {
             SendTypeEnum = SendType.Owner;
-            BlackWords = new List<string>();
-            History = new List<List<string>>();
+            BlackWords   = new List<string>();
+            History      = new List<List<string>>();
             HistoryCount = new List<int>();
         }
         public SendType SendTypeEnum { get; set; }

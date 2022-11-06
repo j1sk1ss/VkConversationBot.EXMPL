@@ -6,7 +6,7 @@ namespace VkConversationBot.EXMPL.Windows {
     public partial class BlackList : Window {
         public BlackList(MainWindow mainWindow) {
             MainWindow = mainWindow;
-            List = MainWindow.UserBList;
+            List       = MainWindow.UserBList;
             InitializeComponent();
             UpdateList();
         }

@@ -12,17 +12,17 @@ using VkNet.Exception;
 namespace VkConversationBot.EXMPL.SCRIPTS {
     public class Vk {
         public Vk(List<QuestObject> questionClasses, string token, string idOfConversation, Preset preset, MainWindow mainWindow) {
-            Preset = preset;
+            Preset     = preset;
             MainWindow = mainWindow;
-            Quests = questionClasses;
-            Token = token;
-            DataBase = new Dictionary<string, string>();
+            Quests     = questionClasses;
+            Token      = token;
+            DataBase   = new Dictionary<string, string>();
             BlackWords = new List<List<string>>();
-                    foreach (var quest in Quests) {
-                        DataBase!.Add(quest.Quest, quest.Answer);
-                        BlackWords!.Add(quest.BlackWords);
-                    }
-            IdOfConversation = long.Parse(idOfConversation.Split("c")[2]);
+                foreach (var quest in Quests) {
+                    DataBase!.Add(quest.Quest, quest.Answer);
+                    BlackWords!.Add(quest.BlackWords);
+                }
+                IdOfConversation = long.Parse(idOfConversation.Split("c")[2]);
         }
         private MainWindow MainWindow { get; }
         private static List<QuestObject> Quests { get; set; } 
