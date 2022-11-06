@@ -74,7 +74,8 @@ namespace VkConversationBot.EXMPL {
             k.Show();
         }
         private void UpdateList() {
-            Questions.Height = _questItems.Count * 50; 
+            const int questDistance = 50;
+            Questions.Height = _questItems.Count * questDistance; 
             Questions.Children.Clear();
             for (var i = 0; i < _questItems.Count; i++) { 
                 var item = new Grid() {
