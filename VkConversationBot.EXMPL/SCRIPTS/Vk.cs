@@ -70,7 +70,18 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
                                                                               + " " + VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.LastName); // Gets user name and surname to History 
                     Quests[i].HistoryCount[DateTime.Now.Hour]++; // Increase count of messages in this hour 
 
-                    SendMessage(DataBase[DataBase.Keys.ToList()[i]], int.Parse(minfo[2].ToString()!), null); // Send message 
+                    switch (Quests[i].SendTypeEnum) { // send message by chosen type
+                        case QuestObject.SendType.Owner:
+                            SendMessage($"Пользователь нуждается в {DataBase.Keys.ToList()[i]}", int.Parse(MainWindow.Vk.Text), null); 
+                            break;
+                        case QuestObject.SendType.User:
+                            SendMessage(DataBase[DataBase.Keys.ToList()[i]], int.Parse(minfo[2].ToString()!), null); 
+                            break;
+                        case QuestObject.SendType.Both:
+                            SendMessage($"Пользователь нуждается в {DataBase.Keys.ToList()[i]}", int.Parse(MainWindow.Vk.Text), null); 
+                            SendMessage(DataBase[DataBase.Keys.ToList()[i]], int.Parse(minfo[2].ToString()!), null); 
+                            break;
+                    }
                     break;
                 }
             }
@@ -82,12 +93,12 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
             if (Preset.DurationUsage) if (!CheckDuration(userid)) return; // Don`t send message if last was sent less then typed count of hours ago
             if (Preset.SoundPerMasg) System.Media.SystemSounds.Asterisk.Play(); // Sound 
             
-                VkApi.Messages.Send(new MessagesSendParams {
+            VkApi.Messages.Send(new MessagesSendParams {
                     Message = message,
                     PeerId = userid,
                     RandomId = new Random().Next(),
                     Keyboard = keyboard
-                });
+            });
         }
         private static bool CheckDuration(long? userid) { // return true if last message was sent less then typed count of hours ago
             return VkApi.Messages.GetHistory(new MessagesGetHistoryParams() {
@@ -100,8 +111,8 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
         private object[] GetMessage() {
             long? userid = 0;
             var messages = VkApi.Messages.GetDialogs(new MessagesDialogsGetParams { 
-                Count = 10, // ~1
-                Unread = true // false
+                Count = 1, // ~10
+                Unread = false // true
             });
             foreach (var msg in messages.Messages) {
                 if (msg.ChatId != IdOfConversation) continue;

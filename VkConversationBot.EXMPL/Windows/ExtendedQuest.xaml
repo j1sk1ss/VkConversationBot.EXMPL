@@ -12,6 +12,7 @@
         <Label x:Name="Question" FontSize="20" Margin="0,40,0,290"> Сообщение: </Label>
         <Label x:Name="Answer" FontSize="20" Margin="0,80,0,290"> Ответ: </Label>
         <Label x:Name="BlackList" FontSize="20" Margin="0,120,0,250"> Чёрный список: </Label>
+        <Label x:Name="SendType" FontSize="20" Margin="0,160,0,200"> Тип ответа: </Label>
         <Grid>
             <lvc:CartesianChart Height="200"
                                 Margin="0,200,0,0"

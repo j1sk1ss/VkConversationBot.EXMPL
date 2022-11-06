@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 namespace VkConversationBot.EXMPL.SCRIPTS {
     public class Preset {
+        public string VkId { get; init; }
         public string Api { get; init; }
         public string ConId { get; init; }
         public bool SoundPerMasg { get; init; }

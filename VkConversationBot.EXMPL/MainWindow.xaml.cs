@@ -19,6 +19,7 @@ namespace VkConversationBot.EXMPL {
                 if (!File.Exists("Preset.json")) return;
                 _preset = JsonConvert.DeserializeObject<Preset>(File.ReadAllText("Preset.json"));
                 if (_preset == null) return;
+                    Vk.Text = _preset.VkId;
                     Access.Text = _preset.Api;
                     Id.Text = _preset.ConId;
                     SoundPerMessage.IsChecked = _preset.SoundPerMasg;
@@ -134,7 +135,8 @@ namespace VkConversationBot.EXMPL {
                         Background = BackGroundWork.IsChecked != null && BackGroundWork.IsChecked.Value,
                         AutoSave = AutoSave.IsChecked != null && AutoSave.IsChecked.Value,
                     BlackList = UserBList,
-                    Quests = _questItems
+                    Quests = _questItems,
+                    VkId = Vk.Text
                 }, Formatting.None, new JsonSerializerSettings() { 
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 }));

@@ -9,6 +9,7 @@
         ResizeMode="NoResize" WindowStyle="SingleBorderWindow">
     <Grid Margin="0,20,0,0">
         <TextBox x:Name="Access" Height="25" Width="100" Margin="-650,-360,0,0"> Токен </TextBox>
+        <TextBox x:Name="Vk" Height="25" Width="100" Margin="-650,-280,0,0"> Ваш Id </TextBox>
         <TextBox x:Name="Id" Height="25" Width="100" Margin="-650,-440,0,0"> Ссылка </TextBox>
         <Grid Margin="540,-100,0,0">
             <Label Margin="20,100,0,340">Базовые настройки:</Label>

@@ -11,7 +11,12 @@
         <TextBox Height="90" Width="200" x:Name="Question" Margin="-226,-180,0,0"> СООБЩЕНИЕ </TextBox>
         <TextBox Height="90" Width="200"  x:Name="Ans" Margin="226,-180,0,0"> ОТВЕТ </TextBox>
         <TextBox Height="35" Width="425" x:Name="Bw" Margin="0,-30,0,0"> ИСКЛЮЧЕНИЯ </TextBox>
-        <Button x:Name="Create" Height="40" Width="420" Margin="0,60,0,0" FontSize="10" Click="Set"> СОЗДАТЬ ЗАПРОС </Button>
+        <Button x:Name="Create" Height="40" Width="260" Margin="-160,60,0,0" FontSize="10" Click="Set"> СОЗДАТЬ ЗАПРОС </Button>
+        <ComboBox x:Name = "InfoType" Height="40" Width="150" Margin="275,60,0,0"> 
+            <ComboBoxItem> Мне </ComboBoxItem>
+            <ComboBoxItem> Пользователю </ComboBoxItem>
+            <ComboBoxItem> Мне и пользователю </ComboBoxItem>
+        </ComboBox>
         <Label Height="50" Width="50" FontSize="40" Margin="0,-200,-10,0"> > </Label>
     </Grid>
 </Window>
