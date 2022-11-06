@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 namespace VkConversationBot.EXMPL.SCRIPTS {
     public class Preset {
         public string VkId { get; init; }
@@ -13,6 +12,6 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
         public bool Background { get; init; }
         public bool AutoSave { get; init; }
         public List<string> BlackList { get; init; }
-        public List<QuestObject> Quests { get; set; }
+        public List<QuestObject> Quests { get; init; }
     }
 }

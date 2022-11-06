@@ -19,18 +19,18 @@ namespace VkConversationBot.EXMPL {
                 if (!File.Exists("Preset.json")) return;
                 _preset = JsonConvert.DeserializeObject<Preset>(File.ReadAllText("Preset.json"));
                 if (_preset == null) return;
-                    Vk.Text = _preset.VkId;
-                    Access.Text = _preset.Api;
-                    Id.Text = _preset.ConId;
-                    SoundPerMessage.IsChecked = _preset.SoundPerMasg;
-                    BlackList.IsChecked = _preset.BlackListUsage;
-                    SoundPerMessage.IsChecked = _preset.AutoLoad;
+                    Vk.Text                       = _preset.VkId;
+                    Access.Text                   = _preset.Api;
+                    Id.Text                       = _preset.ConId;
+                    SoundPerMessage.IsChecked     = _preset.SoundPerMasg;
+                    BlackList.IsChecked           = _preset.BlackListUsage;
+                    SoundPerMessage.IsChecked     = _preset.AutoLoad;
                     TimeDurationChecker.IsChecked = _preset.DurationUsage;
-                    AutoSave.IsChecked = _preset.AutoSave;
-                    BackGroundWork.IsChecked = _preset.Background;
-                    TimeDuration.Text = _preset.Duration;
-                    UserBList = _preset.BlackList;
-                    _questItems = _preset.Quests;
+                    AutoSave.IsChecked            = _preset.AutoSave;
+                    BackGroundWork.IsChecked      = _preset.Background;
+                    TimeDuration.Text             = _preset.Duration;
+                    UserBList                     = _preset.BlackList;
+                    _questItems                   = _preset.Quests;
                     UpdateList();
             }
             catch (Exception e) {
@@ -125,18 +125,18 @@ namespace VkConversationBot.EXMPL {
                 if (Startup.IsChecked != null && Startup.IsChecked.Value) SetStartup();
                 if (AutoSave.IsChecked != null && !AutoSave.IsChecked.Value) return;
                 File.WriteAllText("Preset.json", JsonConvert.SerializeObject(new Preset() {
-                    Api = Access.Text,
-                    ConId =Id.Text,
-                        SoundPerMasg = SoundPerMessage.IsChecked != null && SoundPerMessage.IsChecked.Value,
-                        BlackListUsage = BlackList.IsChecked != null && BlackList.IsChecked.Value,
-                        AutoLoad = Startup.IsChecked != null && Startup.IsChecked.Value,
-                        DurationUsage = TimeDurationChecker.IsChecked != null && TimeDurationChecker.IsChecked.Value,
-                    Duration = TimeDuration.Text,
-                        Background = BackGroundWork.IsChecked != null && BackGroundWork.IsChecked.Value,
-                        AutoSave = AutoSave.IsChecked != null && AutoSave.IsChecked.Value,
-                    BlackList = UserBList,
-                    Quests = _questItems,
-                    VkId = Vk.Text
+                    Api            = Access.Text,
+                    ConId          = Id.Text,
+                    SoundPerMasg   = SoundPerMessage.IsChecked != null && SoundPerMessage.IsChecked.Value,
+                    BlackListUsage = BlackList.IsChecked != null && BlackList.IsChecked.Value,
+                    AutoLoad       = Startup.IsChecked != null && Startup.IsChecked.Value,
+                    DurationUsage  = TimeDurationChecker.IsChecked != null && TimeDurationChecker.IsChecked.Value,
+                    Duration       = TimeDuration.Text,
+                    Background     = BackGroundWork.IsChecked != null && BackGroundWork.IsChecked.Value,
+                    AutoSave       = AutoSave.IsChecked != null && AutoSave.IsChecked.Value,
+                    BlackList      = UserBList,
+                    Quests         = _questItems,
+                    VkId           = Vk.Text
                 }, Formatting.None, new JsonSerializerSettings() { 
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 }));

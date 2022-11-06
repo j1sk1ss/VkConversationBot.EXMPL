@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using LiveCharts.Wpf;
-
 namespace VkConversationBot.EXMPL.Windows {
     public partial class BlackList : Window {
         public BlackList(MainWindow mainWindow) {

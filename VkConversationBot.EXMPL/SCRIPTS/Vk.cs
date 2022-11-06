@@ -8,6 +8,7 @@ using VkNet.Model.RequestParams;
 using VkNet.Enums.Filters;
 using VkNet.Model.Keyboard;
 using System.Windows.Threading;
+using VkNet.Exception;
 namespace VkConversationBot.EXMPL.SCRIPTS {
     public class Vk {
         public Vk(List<QuestObject> questionClasses, string token, string idOfConversation, Preset preset, MainWindow mainWindow) {
@@ -54,51 +55,48 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
             Dispatcher.IsEnabled = true;
         }
         [Obsolete("Obsolete")]
-        private void Receive(object sender, EventArgs e) { // Method for receiving messages 
-            try {
-                var minfo = GetMessage();     // return message from chosen conversation
-                if (minfo == null) return;          // if don`t find any message 
-                var message = minfo[0].ToString();  // gets text of message
-                for (var i = 0; i < DataBase.Count; i++) { // check data base of answers
-                    if (!message!.ToLower().Contains(DataBase.Keys.ToList()[i])) continue; // find answer
-
+        private void Receive(object sender, EventArgs e) {                                                              // Method for receiving messages 
+            var minfo = GetMessage();                                                                             // return message from chosen conversation
+                if (minfo == null) return;                                                                              // if don`t find any message 
+                var message = minfo[0].ToString();                                                                      // gets text of message
+                for (var i = 0; i < DataBase.Count; i++) {                                                              // check data base of answers
+                    if (!message!.ToLower().Contains(DataBase.Keys.ToList()[i])) continue;                              // find answer
                     for (var j = 0; j < BlackWords[i].Count; j++) if (message.ToLower().Contains(BlackWords[i][j])) return; // break if message includes words from Black List
                     if (MainWindow.BlackList.IsChecked != null && MainWindow.BlackList.IsChecked.Value && 
-                        MainWindow.UserBList.Any(id => minfo[2].ToString() == id)) return; // break if message was sent by user from Black List 
-                    
-                    Quests[i].History[DateTime.Now.Hour].Add(VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.FirstName 
-                                                                              + " " + VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.LastName); // Gets user name and surname to History 
-                    Quests[i].HistoryCount[DateTime.Now.Hour]++; // Increase count of messages in this hour 
-
-                    switch (Quests[i].SendTypeEnum) { // send message by chosen type
+                        MainWindow.UserBList.Any(id => minfo[2].ToString() == id)) return;                         // break if message was sent by user from Black List 
+                    Quests[i].History[DateTime.Now.Hour].Add(VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.FirstName
+                                                                        + " " + VkApi.Users.Get(new[] {long.Parse(minfo[2].ToString()!)}).FirstOrDefault()!.LastName); // Gets user name and surname to History 
+                    Quests[i].HistoryCount[DateTime.Now.Hour]++;                                                        // Increase count of messages in this hour 
+                    switch (Quests[i].SendTypeEnum) {                                                                   // send message by chosen type
                         case QuestObject.SendType.Owner:
-                            SendMessage($"Пользователь нуждается в {DataBase.Keys.ToList()[i]}", int.Parse(MainWindow.Vk.Text), null); 
+                            SendMessage($"https://vk.com/id{minfo[2]} нуждается в {DataBase.Keys.ToList()[i]}", int.Parse(MainWindow.Vk.Text), null); 
                             break;
                         case QuestObject.SendType.User:
                             SendMessage(DataBase[DataBase.Keys.ToList()[i]], int.Parse(minfo[2].ToString()!), null); 
                             break;
                         case QuestObject.SendType.Both:
-                            SendMessage($"Пользователь нуждается в {DataBase.Keys.ToList()[i]}", int.Parse(MainWindow.Vk.Text), null); 
+                            SendMessage($"https://vk.com/id{minfo[2]} нуждается в {DataBase.Keys.ToList()[i]}", int.Parse(MainWindow.Vk.Text), null); 
                             SendMessage(DataBase[DataBase.Keys.ToList()[i]], int.Parse(minfo[2].ToString()!), null); 
                             break;
                     }
                     break;
                 }
-            }
-            catch (Exception exception) {
-                    MessageBox.Show($"{exception}", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
-        private static void SendMessage(string message, long? userid, MessageKeyboard keyboard) {
+        private void SendMessage(string message, long? userid, MessageKeyboard keyboard) {
             if (Preset.DurationUsage) if (!CheckDuration(userid)) return; // Don`t send message if last was sent less then typed count of hours ago
             if (Preset.SoundPerMasg) System.Media.SystemSounds.Asterisk.Play(); // Sound 
-            
-            VkApi.Messages.Send(new MessagesSendParams {
+            try {
+                VkApi.Messages.Send(new MessagesSendParams { // try to send message to user
                     Message = message,
                     PeerId = userid,
                     RandomId = new Random().Next(),
                     Keyboard = keyboard
-            });
+                });
+            }
+            catch (CannotSendDuePrivacyException) { // if chat is closed, send message to owner with all information
+                SendMessage($"https://vk.com/id{userid} нуждается в {message}" +
+                            $"\n(Личные сообщения закрыты)", int.Parse(MainWindow.Vk.Text), null); 
+            }
         }
         private static bool CheckDuration(long? userid) { // return true if last message was sent less then typed count of hours ago
             return VkApi.Messages.GetHistory(new MessagesGetHistoryParams() {
@@ -111,8 +109,8 @@ namespace VkConversationBot.EXMPL.SCRIPTS {
         private object[] GetMessage() {
             long? userid = 0;
             var messages = VkApi.Messages.GetDialogs(new MessagesDialogsGetParams { 
-                Count = 1, // ~10
-                Unread = false // true
+                Count = 10, // ~1
+                Unread = true // false
             });
             foreach (var msg in messages.Messages) {
                 if (msg.ChatId != IdOfConversation) continue;
