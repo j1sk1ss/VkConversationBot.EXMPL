@@ -10,27 +10,26 @@ using VkConversationBot.EXMPL.SCRIPTS;
 using VkConversationBot.EXMPL.Windows;
 namespace VkConversationBot.EXMPL {
     public partial class MainWindow {
-        private readonly List<QuestObject> _questItems = new();
-        private readonly Preset _preset;
+        private readonly List<QuestObject> _questList = new();
         public MainWindow() {
             InitializeComponent();
             UserBList = new List<string>();
             try {
                 if (!File.Exists("Preset.json")) return;
-                _preset = JsonConvert.DeserializeObject<Preset>(File.ReadAllText("Preset.json"));
-                if (_preset == null) return;
-                    Vk.Text                       = _preset.VkId;
-                    Access.Text                   = _preset.Api;
-                    Id.Text                       = _preset.ConId;
-                    SoundPerMessage.IsChecked     = _preset.SoundPerMasg;
-                    BlackList.IsChecked           = _preset.BlackListUsage;
-                    Startup.IsChecked             = _preset.AutoLoad;
-                    TimeDurationChecker.IsChecked = _preset.DurationUsage;
-                    AutoSave.IsChecked            = _preset.AutoSave;
-                    BackGroundWork.IsChecked      = _preset.Background;
-                    TimeDuration.Text             = _preset.Duration;
-                    UserBList                     = _preset.BlackList;
-                    _questItems                   = _preset.Quests;
+                var preset = JsonConvert.DeserializeObject<Preset>(File.ReadAllText("Preset.json"));
+                if (preset == null) return;
+                    Vk.Text                       = preset.VkId;
+                    Access.Text                   = preset.Api;
+                    Id.Text                       = preset.ConId;
+                    SoundPerMessage.IsChecked     = preset.SoundPerMasg;
+                    BlackList.IsChecked           = preset.BlackListUsage;
+                    Startup.IsChecked             = preset.AutoLoad;
+                    TimeDurationChecker.IsChecked = preset.DurationUsage;
+                    AutoSave.IsChecked            = preset.AutoSave;
+                    BackGroundWork.IsChecked      = preset.Background;
+                    TimeDuration.Text             = preset.Duration;
+                    UserBList                     = preset.BlackList;
+                    _questList                    = preset.Quests;
                     UpdateList();
             }
             catch (Exception e) {
@@ -38,6 +37,7 @@ namespace VkConversationBot.EXMPL {
                     MessageBoxImage.Asterisk);
             }
         }
+        public List<string> UserBList { get; set; }
         private void CreateQuest(object sender, RoutedEventArgs e) {
             new QuestionSetter(this).Show();
         }
@@ -45,7 +45,7 @@ namespace VkConversationBot.EXMPL {
         [Obsolete("Obsolete")]
         private void StartBot(object sender, RoutedEventArgs routedEventArgs) {
             try {
-                _bot ??= new Vk(_questItems, Access.Text, Id.Text, _preset, this);
+                _bot ??= new Vk(_questList, Access.Text, Id.Text, this);
                     _bot.Start();
                     Strt.Visibility = Visibility.Hidden;
                     End.Visibility  = Visibility.Visible;
@@ -60,24 +60,28 @@ namespace VkConversationBot.EXMPL {
             End.Visibility  = Visibility.Hidden;
         }
         public void AddToList(QuestObject qItem) {
-            _questItems.Add(qItem);
+            _questList.Add(qItem);
             UpdateList();
         }
         private void RemoveFromList(object sender, RoutedEventArgs routedEventArgs) {
-            var x = sender as Button;
-            _questItems.RemoveAt(int.Parse(x!.Name[1..]));
+            var button = sender as Button;
+            var questNum = int.Parse(button!.Name[1..]);
+            
+            _questList.RemoveAt(questNum);
             UpdateList();
         }
         private void ShowQuest(object sender, RoutedEventArgs routedEventArgs) {
-            var x = sender as Button;
-            var k = new ExtendedQuest(_questItems[int.Parse(x!.Name[1..])]);
+            var button = sender as Button;
+            var questNum = int.Parse(button!.Name[1..]);
+            
+            var k = new ExtendedQuest(_questList[questNum], this);
             k.Show();
         }
         private void UpdateList() {
             const int questDistance = 50;
-            Questions.Height = _questItems.Count * questDistance; 
+            Questions.Height = _questList.Count * questDistance; 
             Questions.Children.Clear();
-            for (var i = 0; i < _questItems.Count; i++) { 
+            for (var i = 0; i < _questList.Count; i++) { 
                 var item = new Grid() {
                     Height = 40, Width = 750,
                     VerticalAlignment = VerticalAlignment.Top,
@@ -93,11 +97,11 @@ namespace VkConversationBot.EXMPL {
                         },
                         new Label() {
                             Margin   = new Thickness(0,0,450,0),
-                            FontSize = 10, Content = $" СООБЩЕНИЕ: \n {_questItems[i].Quest}"
+                            FontSize = 10, Content = $" СООБЩЕНИЕ: \n {_questList[i].Quest}"
                         },
                         new Label() {
                             Margin   = new Thickness(350,0,0,0),
-                            FontSize = 10, Content = $" ОТВЕТ: \n {_questItems[i].Answer}"
+                            FontSize = 10, Content = $" ОТВЕТ: \n {_questList[i].Answer}"
                         }
                     }
                 };
@@ -137,7 +141,7 @@ namespace VkConversationBot.EXMPL {
                     Background     = BackGroundWork.IsChecked != null && BackGroundWork.IsChecked.Value,
                     AutoSave       = AutoSave.IsChecked != null && AutoSave.IsChecked.Value,
                     BlackList      = UserBList,
-                    Quests         = _questItems,
+                    Quests         = _questList,
                     VkId           = Vk.Text
                 }, Formatting.None, new JsonSerializerSettings() { 
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -152,7 +156,6 @@ namespace VkConversationBot.EXMPL {
                 OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             key!.SetValue("Conversation bot", System.Reflection.Assembly.GetExecutingAssembly().Location);
         }
-        public List<string> UserBList { get; set; }
         private void UserBlackList(object sender, RoutedEventArgs e) {
             var blackList = new BlackList(this);
             blackList.Show();

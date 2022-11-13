@@ -13,14 +13,10 @@
         <Label x:Name="Answer" FontSize="20" Margin="0,80,0,290"> Ответ: </Label>
         <Label x:Name="BlackList" FontSize="20" Margin="0,120,0,250"> Чёрный список: </Label>
         <Label x:Name="SendType" FontSize="20" Margin="0,160,0,200"> Тип ответа: </Label>
+        <Button Height="25" Width="100" Margin="660,0,0,0" Click="ChangeQuest"> Изменить </Button>
         <Grid>
-            <lvc:CartesianChart Height="200"
-                                Margin="0,200,0,0"
-                                LegendLocation="Bottom"
-                                Hoverable="True"
-                                x:Name="ExtendedInfo"
-                                DataClick="ShowUsers"
-                                >
+            <lvc:CartesianChart Height="200" Margin="0,200,0,0" LegendLocation="Bottom"
+                                Hoverable="True" x:Name="ExtendedInfo" DataClick="ShowUsers">
             </lvc:CartesianChart>
         </Grid>
     </Grid>
